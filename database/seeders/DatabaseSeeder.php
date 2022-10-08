@@ -18,7 +18,6 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             KosSeeder::class,
             FotoSeeder::class,
-            PintuSeeder::class,
             PeraturanSeeder::class,
             FasilitasSeeder::class,
             PengaturanSeeder::class,

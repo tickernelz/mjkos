@@ -17,20 +17,27 @@
             @endrole
 
             @role('admin')
-            <li class="dropdown">
-                <a href="#" class="nav-link has-dropdown"><i class="fas fa-fire"></i><span>Pengguna</span></a>
+            <li class="dropdown @if(Request::is('*pengguna*')) active @endif">
+                <a href="#" class="nav-link has-dropdown"><i class="fas fa-users"></i><span>Pengguna</span></a>
                 <ul class="dropdown-menu">
-                    <li><a class="nav-link" href="{{route('pengguna.index')}}">Daftar Pengguna</a></li>
-                    <li><a class="nav-link" href="{{route('pengguna.create')}}">Tambah Pengguna</a></li>
+                    <li class=" @if(Request::is('pengguna*') && !Request::is('*pengguna/create*')) active @endif"><a
+                            class="nav-link" href="{{route('pengguna.index')}}">Daftar Pengguna</a></li>
+                    <li class=" @if(Request::is('*pengguna/create*')) active @endif"><a class="nav-link"
+                                                                                        href="{{route('pengguna.create')}}">Tambah
+                            Pengguna</a></li>
                 </ul>
             </li>
             @endrole
-            <li class="dropdown">
+            <li class="dropdown @if(Request::is('*transaksi*') || Request::is('*daftar*')) active @endif">
                 <a href="#" class="nav-link has-dropdown"><i class="fas fa-fire"></i><span>Data Sewa Kos</span></a>
                 <ul class="dropdown-menu">
-                    <li><a class="nav-link" href="{{route('transaksi.index')}}">Daftar Booking</a></li>
+                    <li class="@if(Request::is('*transaksi*')) active @endif"><a class="nav-link"
+                                                                                 href="{{route('transaksi.index')}}">Daftar
+                            Booking</a></li>
                     @role('pemilik')
-                    <li><a class="nav-link" href="{{route('pengguna.kos')}}">Daftar Pengguna Kos</a></li>
+                    <li class="@if(Request::is('*daftar*')) active @endif"><a class="nav-link"
+                                                                              href="{{route('pengguna.kos')}}">Daftar
+                            Pengguna Kos</a></li>
                     @endrole
                 </ul>
             </li>

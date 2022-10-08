@@ -24,7 +24,7 @@
                             </li>
                         </ul>
                     </li>
-                @elseif (Auth::user()->hasRole('pemilik'))
+                @elseif (Auth::user()->hasAnyRole(['pemilik', 'admin']))
                     <li><a class="nav-link scrollto"
                            href="{{ route('dashboard') }}">Dashboard</a></li>
                     <li class="dropdown" style="width: 30px"><a href="#"><img class="my-2" style="border-radius: 50%"

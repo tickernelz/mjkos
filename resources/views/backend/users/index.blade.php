@@ -34,12 +34,12 @@
                         </a>
                         @if ($data->aktif == 0)
                         <a href="{{ route('pengguna.aktif', ['user_id' => encrypt($data->id), 'aktif' => 1]) }}"
-                            title="Inactive" class="table-action btn btn-success mr-2" data-toggle="tooltip">
+                           title="Active" class="table-action btn btn-success mr-2" data-toggle="tooltip">
                             <i class="fa fa-check"></i>
                         </a>
                         @elseif ($data->aktif == 1)
                         <a href="{{ route('pengguna.aktif', ['user_id' => encrypt($data->id), 'aktif' => 0]) }}"
-                            title="Active" class="table-action btn btn-danger mr-2" data-toggle="tooltip">
+                           title="Inactive" class="table-action btn btn-danger mr-2" data-toggle="tooltip">
                             <i class="fa fa-ban"></i>
                         </a>
                         @endif

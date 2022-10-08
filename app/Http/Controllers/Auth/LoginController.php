@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -33,7 +32,7 @@ class LoginController extends Controller
     {
         if (!Auth::user()->aktif == 1) {
             Auth::logout();
-            return redirect()->route('login')->with('error', "Akun belum terdaftar!!");
+            return redirect()->route('login')->with('error', "Akun anda belum aktif, silahkan hubungi admin!");
         }
         if ($user->role_id == 3) {
             return redirect('/')->with('success', "Selamat datang");
