@@ -4,16 +4,15 @@
     <x-alert/>
     <!-- ======= Hero Section ======= -->
     <section id="hero" class="d-flex justify-cntent-center align-items-center"
-             style="background: url('/images/{{$kos->cover}}') top center; background-size: cover;">
+             style="background: url('/images/{{$pengaturan->cover}}') top center; background-size: cover;">
         <!-- Slide 1 -->
         <div class="carousel-item active">
             <div class="carousel-container">
                 <h2 class="animate__animated animate__fadeInDown"><span>Mau Cari Tempat Kos ?</span>
                 </h2>
                 <p class="animate__animated animate__fadeInUp">Cari Kos Sesuai Kebutuhanmu di
-                    <span class="fw-bold">{{$kos->nama}}</span> Sekarang.</p>
-                <a href="/daftar" class="btn-get-started animate__animated animate__fadeInUp scrollto">Cari Kamar
-                    Kos</a>
+                    <span class="fw-bold">{{$pengaturan->nama}}</span> Sekarang.</p>
+                <a href="/daftar" class="btn-get-started animate__animated animate__fadeInUp scrollto">Cari Kos</a>
             </div>
         </div>
     </section><!-- End Hero -->
@@ -38,21 +37,21 @@
     <section id="icon-boxes" class="icon-boxes">
         <div class="container" data-aos="fade-up">
             <div class="d-flex justify-content-between mb-3">
-                <h2 class="title" style="color: #054a85;">Kamar kos pilihan</h2>
+                <h2 class="title" style="color: #054a85;">Kos kos pilihan</h2>
                 <a href="/daftar" class="btn btn-light shadow-sm" style="border:1px solid rgb(189, 189, 189)">Lihat
                     Semua</a>
             </div>
             <div class="row">
-                @foreach ($kamar as $key=>$item)
+                @foreach ($kos as $key=>$item)
                     <div class="col-md-5 mt-5 col-lg-4 col-xl-3">
-                        <a href="{{route('detail.kamar',$item->id)}}">
+                        <a href="{{route('detail.kos',$item->id)}}">
                             <div class="card card-item shadow-lg text-black">
                                 <div class="img-content"
-                                     style="background-image: url('/images/kamar/{{$item->cover}}');">
+                                     style="background-image: url('/images/kos/{{$item->cover}}');">
                                 </div>
                                 <div class="card-body">
                                     <div>
-                                        <h4 class="card-title fw-bold">Kamar Nomor {{$item->pintu->nama}}</h4>
+                                        <h4 class="card-title fw-bold">{{ $item->nama }}</h4>
                                         <p class="text-muted my-0">Ukuran : {{$item->ukuran}}</p>
                                         <span style="font-size: 14px">Terakhir diupdate
                                     {{$item->updated_at->format('d M Y')}}</span>
@@ -73,19 +72,19 @@
             <div class="container">
                 <div class="text-center">
                     <h1 class="logo fw-bold"></i>MJK<i class="bi bi-house-heart-fill"></i>S</h1>
-                    <span class="text-start">{{$kos->deskripsi}}</span>
+                    <span class="text-start">{{$pengaturan->deskripsi}}</span>
                     <div class="row mt-3">
                         <div class="col">
                             <div class="fw-bold">Nomor Telp</div>
-                            <div class="">{{$kos->telp}}</div>
+                            <div class="">{{$pengaturan->telp}}</div>
                         </div>
                         <div class="col">
                             <div class="fw-bold">Email</div>
-                            <div class="">{{$kos->email}}</div>
+                            <div class="">{{$pengaturan->email}}</div>
                         </div>
                         <div class="col">
                             <div class="fw-bold">Alamat</div>
-                            <div class="">{{$kos->alamat}}</div>
+                            <div class="">{{$pengaturan->alamat}}</div>
                         </div>
                     </div>
                 </div>

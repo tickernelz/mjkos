@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Fasilitas;
-use App\Models\Kamar;
+use App\Models\Kos;
 use App\Models\Peraturan;
 use App\Models\Transaksi;
 use Illuminate\Http\Request;
@@ -11,70 +11,70 @@ use Illuminate\Support\Facades\Auth;
 
 class FrontendController extends Controller
 {
-    public function detailKamar($id)
+    public function detailKos($id)
     {
-        $kamar = Kamar::whereId($id)->with('foto')->first();
+        $kos = Kos::whereId($id)->with('foto')->first();
         if (Auth::check()) {
-            $transaksi = Transaksi::where('kamar_id', $id)
+            $transaksi = Transaksi::where('kos_id', $id)
                 ->where('user_id', Auth::user()->id)
                 ->first();
         } else {
-            $transaksi = Transaksi::where('kamar_id', $id)
+            $transaksi = Transaksi::where('kos_id', $id)
                 ->first();
         }
 
-        $fasilitas = Fasilitas::all();
-        $peraturan = Peraturan::all();
-        return view('frontend.detail-kamar', compact('kamar', 'fasilitas', 'peraturan', 'transaksi'));
+        $fasilitas = Fasilitas::where('kos_id', $id)->get();
+        $peraturan = Peraturan::where('kos_id', $id)->get();
+        return view('frontend.detail-kos', compact('kos', 'fasilitas', 'peraturan', 'transaksi'));
     }
 
     public function formPengajuan($id, Request $request)
     {
-        // id = Kamar id
-        $transaksi = Transaksi::where('kamar_id', $id)
+        // id = Kos id
+        $transaksi = Transaksi::where('kos_id', $id)
             ->where('user_id', Auth::user()->id)
             ->where('status', '!=', 0)
             ->first();
-        $kamar = Kamar::whereId($id)->first();
+        $kos = Kos::whereId($id)->first();
         $biaya = $request->biaya;
         $tgl_mulai = $request->date;
         $durasi = $request->durasi;
-        return view('frontend.pengajuan', compact('transaksi', 'kamar', 'biaya', 'tgl_mulai', 'durasi'));
+        return view('frontend.pengajuan', compact('transaksi', 'kos', 'biaya', 'tgl_mulai', 'durasi'));
     }
 
     public function updatePengajuan($id, Request $request)
     {
         $transaksi = Transaksi::where('user_id', Auth::user()->id)->whereBetween('status', [1, 4])->get();
         if ($transaksi->IsNotEmpty()) {
-            return redirect()->back()->with('error', 'Anda tidak boleh meminjam lebih dari 1 kamar.');
+            return redirect()->back()->with('error', 'Anda tidak boleh meminjam lebih dari 1 kos.');
         }
 
         $durasi = "+" . $request->durasi . "" . "month";
         $tgl_end = date('Y-m-d', strtotime($durasi, strtotime($request->mulai)));
         $kode = "ATJ" . "-" . date('dmY') . substr(str_shuffle("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 5);
-        $favorit =  Transaksi::where('kamar_id', $id)
+        $favorit = Transaksi::where('kos_id', $id)
             ->where('status', 0)
             ->where('user_id', Auth::user()->id)
             ->first();
         if ($favorit) {
             Transaksi::whereId($favorit->id)->update([
-                'kode'              => $kode,
-                'durasi'            => $request->durasi,
-                'tgl_mulai'         => $request->mulai,
-                'tgl_selesai'       => $tgl_end,
-                'status'            => 1,
-                'biaya'             => $request->biaya
+                'kode' => $kode,
+                'durasi' => $request->durasi,
+                'tgl_mulai' => $request->mulai,
+                'tgl_selesai' => $tgl_end,
+                'status' => 1,
+                'biaya' => $request->biaya
             ]);
         } else {
             Transaksi::create([
-                'kode'              => $kode,
-                'user_id'           => Auth::user()->id,
-                'kamar_id'          => $id,
-                'durasi'            => $request->durasi,
-                'tgl_mulai'         => $request->mulai,
-                'tgl_selesai'       => $tgl_end,
-                'status'            => 1,
-                'biaya'             => $request->biaya
+                'kode' => $kode,
+                'user_id' => Auth::user()->id,
+                'kos_id' => $id,
+                'durasi' => $request->durasi,
+                'tgl_mulai' => $request->mulai,
+                'tgl_selesai' => $tgl_end,
+                'status' => 1,
+                'biaya' => $request->biaya
             ]);
         }
 
@@ -93,7 +93,7 @@ class FrontendController extends Controller
         }
 
         $bukti = $request->bukti;
-        $kmr = 'no-kamar-' . $transaksi->kamar->pintu_id;
+        $kmr = 'no-kos-' . $transaksi->kos->pintu_id;
         $new_bukti = 'Pembayaran' . "-" . date('Y-m-d') . "-" . Auth::user()->name . "-" . $kmr . "." . $bukti->getClientOriginalExtension();
         $destination = 'images/bukti';
         $bukti->move($destination, $new_bukti);
@@ -122,8 +122,8 @@ class FrontendController extends Controller
 
     public function transaksiDestroy(Request $request)
     {
-        $kamar_id = Transaksi::whereId($request->delete_id)->value('kamar_id');
-        Kamar::whereId($kamar_id)->update([
+        $kos_id = Transaksi::whereId($request->delete_id)->value('kos_id');
+        Kos::whereId($kos_id)->update([
             'status' => 0
         ]);
         Transaksi::whereId($request->delete_id)->delete();
@@ -133,9 +133,9 @@ class FrontendController extends Controller
     public function addFavorit($id)
     {
         Transaksi::create([
-            'status'            => 0,
-            'user_id'           => Auth::user()->id,
-            'kamar_id'          => $id,
+            'status' => 0,
+            'user_id' => Auth::user()->id,
+            'kos_id' => $id,
         ]);
         return redirect()->back()->with('success', 'Berhasil ditambah ke dalam favorit.');
     }

@@ -15,16 +15,24 @@ class PintuSeeder extends Seeder
     public function run()
     {
         Pintu::create([
-            'nama' => 1
+            'kos_id' => 1,
+            'nama' => 'Pintu A1',
+            'status' => 0
         ]);
         Pintu::create([
-            'nama' => 2
+            'kos_id' => 1,
+            'nama' => 'Pintu A2',
+            'status' => 0
         ]);
         Pintu::create([
-            'nama' => 3
+            'kos_id' => 1,
+            'nama' => 'Pintu A3',
+            'status' => 0
         ]);
         Pintu::create([
-            'nama' => 4
+            'kos_id' => 1,
+            'nama' => 'Pintu A4',
+            'status' => 0
         ]);
     }
 }

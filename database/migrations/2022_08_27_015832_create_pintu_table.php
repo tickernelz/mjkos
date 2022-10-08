@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Kos;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,7 +16,9 @@ class CreatePintuTable extends Migration
     {
         Schema::create('pintu', function (Blueprint $table) {
             $table->id();
-            $table->integer('nama');
+            $table->foreignIdFor(Kos::class)->constrained()->cascadeOnDelete();
+            $table->string('nama');
+            $table->integer('status');  //0 = kosong; 1 = terisi
             $table->timestamps();
         });
     }

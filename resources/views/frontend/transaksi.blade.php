@@ -19,45 +19,46 @@
         <div class="container-fluid">
             <div class="card shadow mx-4 mb-4 border-0">
                 <div class="card-footer text-center">
-                    <h3 class="fw-bold">Daftar Kamar Terpilih</h3>
+                    <h3 class="fw-bold">Daftar Kos Terpilih</h3>
                 </div>
                 @if ($transaksi->isNotEmpty())
                 <div class="card-body p-3">
                     @foreach ($transaksi as $item)
-                    <div class="card rounded-3 mb-4">
-                        {{-- <div class="">
-                            <a href="/surat" title="Surat" class="btn btn-success float-end"><i
-                                    class="bi bi-filetype-pdf"> Unduh Bukti Peminjaman</i></a>
-                        </div> --}}
-                        <div class="card-body p-4">
-                            <div class="row d-flex justify-content-between align-items-center">
-                                <div class="col col-lg-4">
-                                    <div class="img-proc">
-                                        <img src="{{asset('images/kamar/'.$item->kamar->cover)}}"
-                                            class="img-fluid rounded-3">
-                                        <div class="img-proc__content">
-                                            <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
-                                                data-bs-target="#exampleModal">
-                                                Lihat Semua Gambar
-                                            </button>
+                        <div class="card rounded-3 mb-4">
+                            {{-- <div class="">
+                                <a href="/surat" title="Surat" class="btn btn-success float-end"><i
+                                        class="bi bi-filetype-pdf"> Unduh Bukti Peminjaman</i></a>
+                            </div> --}}
+                            <div class="card-body p-4">
+                                <div class="row d-flex justify-content-between align-items-center">
+                                    <div class="col col-lg-4">
+                                        <div class="img-proc">
+                                            <img src="{{asset('images/kos/'.$item->kos->cover)}}"
+                                                 class="img-fluid rounded-3" alt="foto"
+                                                 style="width: 300px; height: 300px">
+                                            <div class="img-proc__content">
+                                                <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
+                                                        data-bs-target="#exampleModal">
+                                                    Lihat Semua Gambar
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div class="col">
-                                    <div class="text-start">
-                                        <h4 class="card-title fw-bold">Kamar Nomor {{$item->kamar->pintu->nama}}</h4>
-                                        <p class="text-muted mb-2">Ukuran : {{$item->kamar->ukuran}}</p>
-                                    </div>
-                                    <div class="my-3">
-                                        <span class="fw-bold">Status</span>&nbsp;
-                                        @if ($item->status == 1)
-                                        <span class="badge bg-secondary">Pengajuan</span>
-                                        @elseif($item->status == 2 || $item->status == 3)
-                                        <span class="badge bg-warning">Pembayaran</span>
-                                        @elseif($item->status == 4 || $item->status == 8)
-                                        <span class="badge bg-success">Sewa</span>
-                                        @php
+                                    <div class="col">
+                                        <div class="text-start">
+                                            <h4 class="card-title fw-bold">{{$item->kos->nama}}</h4>
+                                            <p class="text-muted mb-2">Ukuran : {{$item->kos->ukuran}}</p>
+                                        </div>
+                                        <div class="my-3">
+                                            <span class="fw-bold">Status</span>&nbsp;
+                                            @if ($item->status == 1)
+                                                <span class="badge bg-secondary">Pengajuan</span>
+                                            @elseif($item->status == 2 || $item->status == 3)
+                                                <span class="badge bg-warning">Pembayaran</span>
+                                            @elseif($item->status == 4 || $item->status == 8)
+                                                <span class="badge bg-success">Sewa</span>
+                                                @php
                                         $tgl1 = new DateTime(date('Y-m-d'));
                                         $tgl2 = new DateTime($item->tgl_selesai);
                                         $d = $tgl2->diff($tgl1)->days - 1;
@@ -99,7 +100,7 @@
                                                 enctype="multipart/form-data">
                                                 @csrf
                                                 <input type="text" hidden name="id" value="{{$item->id}}">
-                                                
+
                                                 @if ($item->status == -2)
                                                 <input type="text" hidden name="status" value="1">
                                                 <span style="fw-bold">Upload ulang bukti Pembayaran</span>
@@ -112,37 +113,44 @@
                                                         id="exampleName" placeholder="Nama" name="bukti"
                                                         value="{{ old('bukti') }}">
                                                     <button type="submit"
-                                                        class="btn btn-primary mt-2 float-end">Kirim</button>
+                                                            class="btn btn-primary mt-2 float-end">Kirim
+                                                    </button>
                                                 </div>
                                             </form>
                                         </div>
                                     </div>
-                                    @endif
-                                </div>
-                                <div class="col col-lg-2">
-                                    <div class="text-end d-flex">
-                                        @if ($item->status < 4)
-                                        <a href="{{route('form.pengajuan', $item->kamar_id)}}" class="btn btn-primary"><i class="bi bi-eye"></i></a>
-                                            @if ($item->status <= 2) 
-                                                <button class="btn btn-danger delete-btn mx-2" title="Delete" value="{{$item->id}}"><i class="bi bi-trash"></i></button>
-                                            @elseif($item->status == -1)
-                                                <a href="/detail/kamar/{{$item->kamar_id}}"
-                                                    class="table-action btn btn-warning mx-2" title="Ajukan Ulang">
-                                                    <i class="bi bi-arrow-counterclockwise"></i>
-                                                </a>
-                                            @endif
-                                        @else
-                                            @if($item->tgl_selesai <= date('Y-m-d'))
-                                            <a href="{{route('transaksi.status', [$item->id, 5])}}" class="btn btn-warning mx-2" 
-                                            title="Ajukan Perpanjang"> <i class="bi bi-calendar2-plus"></i></a>
-                                            <button class="btn btn-danger delete-btn" title="Keluar" data-toggle="tooltip" value="{{$item->id}}"><i class="bi bi-trash"></i></button>
-                                            @endif
                                         @endif
+                                    </div>
+                                    <div class="col col-lg-2">
+                                        <div class="text-end d-flex">
+                                            @if ($item->status < 4)
+                                                <a href="{{route('form.pengajuan', $item->kos_id)}}"
+                                                   class="btn btn-primary"><i class="bi bi-eye"></i></a>
+                                                @if ($item->status <= 2)
+                                                    <button class="btn btn-danger delete-btn mx-2" title="Delete"
+                                                            value="{{$item->id}}"><i class="bi bi-trash"></i></button>
+                                                @elseif($item->status == -1)
+                                                    <a href="/detail/kos/{{$item->kos_id}}"
+                                                       class="table-action btn btn-warning mx-2" title="Ajukan Ulang">
+                                                        <i class="bi bi-arrow-counterclockwise"></i>
+                                                    </a>
+                                                @endif
+                                            @else
+                                                @if($item->tgl_selesai <= date('Y-m-d'))
+                                                    <a href="{{route('transaksi.status', [$item->id, 5])}}"
+                                                       class="btn btn-warning mx-2"
+                                                       title="Ajukan Perpanjang"> <i
+                                                            class="bi bi-calendar2-plus"></i></a>
+                                                    <button class="btn btn-danger delete-btn" title="Keluar"
+                                                            data-toggle="tooltip" value="{{$item->id}}"><i
+                                                            class="bi bi-trash"></i></button>
+                                                @endif
+                                            @endif
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
                     @endforeach
                 </div>
                 @else
@@ -159,28 +167,28 @@
 </div>
 
 @if ($transaksi->isNotEmpty())
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Foto Kamar No {{$item->kamar->pintu->nama}}</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="hero mb-2" style="background-image: url('/images/kamar/{{$item->kamar->cover}}')">
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Foto Kos No {{$item->kos->nama}}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                @foreach ($item->kamar->foto as $data)
-                <div class="hero mb-2" style="background-image: url('/images/kamar/multiple/{{$data->nama}}')">
+                <div class="modal-body">
+                    <div class="hero mb-2" style="background-image: url('/images/kos/{{$item->kos->cover}}')">
+                    </div>
+                    @foreach ($item->kos->foto as $data)
+                        <div class="hero mb-2" style="background-image: url('/images/kos/multiple/{{$data->nama}}')">
+                        </div>
+                    @endforeach
                 </div>
-                @endforeach
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 @endif
 
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

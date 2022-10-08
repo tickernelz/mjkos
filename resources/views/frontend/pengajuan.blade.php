@@ -18,24 +18,24 @@
 
         <div class="container">
             @if ($transaksi)
-            <div class="isNotEmpty">
-                <a href="/transaksi-saya" class="btn btn-warning text-dark fw-bold"><span><i
-                            class="bi bi-clipboard"></i>
+                <div class="isNotEmpty">
+                    <a href="/transaksi-saya" class="btn btn-warning text-dark fw-bold"><span><i
+                                class="bi bi-clipboard"></i>
                         Transaksi Saya</span></a>
-                <h3 class="fw-bold mb-3 mt-5 text-muted">Kode Booking Anda : {{$transaksi->kode}}</h3>
-                <div class="text-start">
-                    <h4 class="card-title fw-bold">Kamar Nomer {{$transaksi->kamar->pintu->nama}}</h4>
-                    <p class="text-muted mb-2">Ukuran : {{$transaksi->kamar->ukuran}}</p>
-                </div>
+                    <h3 class="fw-bold mb-3 mt-5 text-muted">Kode Booking Anda : {{$transaksi->kode}}</h3>
+                    <div class="text-start">
+                        <h4 class="card-title fw-bold">{{$transaksi->kos->nama}}</h4>
+                        <p class="text-muted mb-2">Ukuran : {{$transaksi->kos->ukuran}}</p>
+                    </div>
 
-                @if($transaksi->status == 1 || $transaksi->status == -1)
-                <div class="">
-                    <div class="md-stepper-horizontal orange">
-                        <div class="md-step active">
-                            <div class="md-step-circle"><span>1</span></div>
-                            <div class="md-step-title">Ajukan sewa</div>
-                            <div class="md-step-bar-right active"></div>
-                        </div>
+                    @if($transaksi->status == 1 || $transaksi->status == -1)
+                        <div class="">
+                            <div class="md-stepper-horizontal orange">
+                                <div class="md-step active">
+                                    <div class="md-step-circle"><span>1</span></div>
+                                    <div class="md-step-title">Ajukan sewa</div>
+                                    <div class="md-step-bar-right active"></div>
+                                </div>
                         <div class="md-step">
                             <div class="md-step-circle"><span>2</span></div>
                             <div class="md-step-title">Pemilik menyetujui</div>
@@ -62,21 +62,22 @@
                             <span>Biaya yang harus anda bayar</span><span>Rp {{$transaksi->biaya}}</span>
                         </div>
                     </div>
-                    <hr>
-                    @if ($transaksi->status == -1)
-                    <div class="text-center mt-3">
-                        <h2 class="text-danger">PENGAJUAN DITOLAK</h2>
-                        <a href="/detail/kamar/{{$transaksi->kamar_id}}" class="table-action btn btn-warning mx-2"
-                            data-toggle="tooltip" title="Ajukan Ulang">
-                            <i class="bi bi-arrow-counterclockwise"></i>
-                        </a>
-                    </div>
-                    @else
-                    <div class="text-center mt-3">
-                        <h2>Menunggu Persetujuan Pemilik...</h2>
-                    </div>
-                    @endif
-                </div>
+                            <hr>
+                            @if ($transaksi->status == -1)
+                                <div class="text-center mt-3">
+                                    <h2 class="text-danger">PENGAJUAN DITOLAK</h2>
+                                    <a href="/detail/kos/{{$transaksi->kos_id}}"
+                                       class="table-action btn btn-warning mx-2"
+                                       data-toggle="tooltip" title="Ajukan Ulang">
+                                        <i class="bi bi-arrow-counterclockwise"></i>
+                                    </a>
+                                </div>
+                            @else
+                                <div class="text-center mt-3">
+                                    <h2>Menunggu Persetujuan Pemilik...</h2>
+                                </div>
+                            @endif
+                        </div>
 
                 @elseif($transaksi->status == 2 || $transaksi->status == -2)
                 <form action="{{route('update.pembayaran')}}" method="post" enctype="multipart/form-data">
@@ -152,8 +153,9 @@
                                         <label><span style="color:red;">*</span> Upload Bukti Pembayaran</label>
                                         <input type="text" hidden name="id" value="{{$transaksi->id}}">
                                         <input autocomplete="off" type="file"
-                                            class="form-control form-control-user @error('bukti') is-invalid @enderror"
-                                            id="exampleName" placeholder="Nama" name="bukti" value="{{ old('bukti') }}">
+                                               class="form-control form-control-user @error('bukti') is-invalid @enderror"
+                                               id="exampleName" placeholder="Nama" name="bukti"
+                                               value="{{ old('bukti') }}">
                                         <button type="submit" class="btn btn-primary mt-2 float-end">Kirim</button>
                                     </div>
                                 </div>
@@ -162,18 +164,18 @@
                     </div>
                 </form>
 
-                @elseif($transaksi->status == 3)
-                <form action="{{route('update.pengajuan',$transaksi->kamar_id)}}" method="post">
-                    @csrf
-                    <div class="">
-                        <div class="md-stepper-horizontal orange">
-                            <div class="md-step active">
-                                <div class="md-step-circle"><span>1</span></div>
-                                <div class="md-step-title">Ajukan sewa</div>
-                                <div class="md-step-bar-right active"></div>
-                            </div>
-                            <div class="md-step active">
-                                <div class="md-step-circle"><span>2</span></div>
+                    @elseif($transaksi->status == 3)
+                        <form action="{{route('update.pengajuan',$transaksi->kos_id)}}" method="post">
+                            @csrf
+                            <div class="">
+                                <div class="md-stepper-horizontal orange">
+                                    <div class="md-step active">
+                                        <div class="md-step-circle"><span>1</span></div>
+                                        <div class="md-step-title">Ajukan sewa</div>
+                                        <div class="md-step-bar-right active"></div>
+                                    </div>
+                                    <div class="md-step active">
+                                        <div class="md-step-circle"><span>2</span></div>
                                 <div class="md-step-title">Pemilik menyetujui</div>
                                 <div class="md-step-bar-left active"></div>
                                 <div class="md-step-bar-right active"></div>
@@ -246,31 +248,31 @@
                         <a href="/surat" class="btn btn-success"><i class="bi bi-filetype-pdf"></i> Surat Sewa</a> --}}
                     </div>
                 </div>
-                @endif
-            </div>
+                    @endif
+                </div>
 
             @else
-            <div class="Empty">
-                <a href="/detail/kamar/{{$kamar->id}}" class="btn btn-warning text-dark fw-bold"><span><i
-                            class="bi bi-chevron-left"></i>
+                <div class="Empty">
+                    <a href="/detail/kos/{{$kos->id}}" class="btn btn-warning text-dark fw-bold"><span><i
+                                class="bi bi-chevron-left"></i>
                         Kembali</span></a>
-                <h3 class="fw-bold mb-3 mt-5">Pengajuan Sewa</h3>
-                <div class="text-start">
-                    <h4 class="card-title fw-bold">Kamar Nomer {{$kamar->pintu->nama}}</h4>
-                    <p class="text-muted mb-2">Ukuran : {{$kamar->ukuran}}</p>
-                </div>
-                <div class="">
-                    <form action="{{route('update.pengajuan', $kamar->id)}}" method="post">
-                        @csrf
-                        <div class="md-stepper-horizontal orange">
-                            <div class="md-step active">
-                                <div class="md-step-circle"><span>1</span></div>
-                                <div class="md-step-title">Ajukan sewa</div>
-                                <div class="md-step-bar-right active"></div>
-                            </div>
-                            <div class="md-step">
-                                <div class="md-step-circle"><span>2</span></div>
-                                <div class="md-step-title">Pemilik menyetujui</div>
+                    <h3 class="fw-bold mb-3 mt-5">Pengajuan Sewa</h3>
+                    <div class="text-start">
+                        <h4 class="card-title fw-bold">{{$kos->nama}}</h4>
+                        <p class="text-muted mb-2">Ukuran : {{$kos->ukuran}}</p>
+                    </div>
+                    <div class="">
+                        <form action="{{route('update.pengajuan', $kos->id)}}" method="post">
+                            @csrf
+                            <div class="md-stepper-horizontal orange">
+                                <div class="md-step active">
+                                    <div class="md-step-circle"><span>1</span></div>
+                                    <div class="md-step-title">Ajukan sewa</div>
+                                    <div class="md-step-bar-right active"></div>
+                                </div>
+                                <div class="md-step">
+                                    <div class="md-step-circle"><span>2</span></div>
+                                    <div class="md-step-title">Pemilik menyetujui</div>
                                 <div class="md-step-bar-left"></div>
                                 <div class="md-step-bar-right"></div>
                             </div>
@@ -348,16 +350,16 @@
                                     <h4 class="fw-bold">Tanggal mulai ngekos</h4>
                                 </div>
                                 <input type="date" class="form-control" id="date" name="mulai" value="{{$tgl_mulai}}"
-                                    id="">
+                                       id="">
                             </div>
-                            <input type="text" hidden id="awal" value="{{$kamar->biaya}}">
+                            <input type="text" hidden id="awal" value="{{$kos->biaya}}">
                             <div class="mt-4">
                                 <button class="btn btn-success p-3" style="width:100%;">Ajukan Sewa</button>
                             </div>
                         </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
-            </div>
             @endif
 
         </div>

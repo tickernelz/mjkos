@@ -8,11 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Foto extends Model
 {
     use HasFactory;
-    protected $table = "foto";
-    protected $guarded = [];
 
-    public function kamar()
+    protected $table = "foto";
+    protected $guarded = [
+        'id'
+    ];
+
+    public function kos()
     {
-        return $this->belongsTo(Kamar::class);
+        return $this->belongsTo(Kos::class);
     }
 }

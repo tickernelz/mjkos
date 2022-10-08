@@ -22,30 +22,33 @@
         <div class="container-fluid">
             <div class="row justify-content-center">
                 @if ($transaksi->isNotEmpty())
-                @foreach ($transaksi as $item)
-                <div class="col-md-5 mt-5 col-lg-4 col-xl-3">
-                    <a href="{{route('detail.kamar',$item->kamar_id)}}">
-                        <div class="card card-item shadow-lg text-black">
-                            <div class="img-content" style="background-image: url('/images/kamar/{{$item->kamar->cover}}');">
-                            </div>
-                            <div class="card-body">
-                                <div>
-                                    <h4 class="card-title fw-bold">Kamar Nomor {{$item->kamar->pintu->nama}}</h4>
-                                    <p class="text-muted my-0">Ukuran : {{$item->kamar->ukuran}}</p>
-                                    <span style="font-size: 14px">Terakhir diupdate {{$item->kamar->updated_at->format('d M Y')}}</span>
+                    @foreach ($transaksi as $item)
+                        <div class="col-md-5 mt-5 col-lg-4 col-xl-3">
+                            <a href="{{route('detail.kos',$item->kos_id)}}">
+                                <div class="card card-item shadow-lg text-black">
+                                    <div class="img-content"
+                                         style="background-image: url('/images/kos/{{$item->kos->cover}}');">
+                                    </div>
+                                    <div class="card-body">
+                                        <div>
+                                            <h4 class="card-title fw-bold">Kos Nomor {{$item->kos->pintu->nama}}</h4>
+                                            <p class="text-muted my-0">Ukuran : {{$item->kos->ukuran}}</p>
+                                            <span
+                                                style="font-size: 14px">Terakhir diupdate {{$item->kos->updated_at->format('d M Y')}}</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between total font-weight-bold mt-3">
+                                            <span>Rp {{$item->kos->harga}}</span><span>/ bulan</span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="d-flex justify-content-between total font-weight-bold mt-3">
-                                    <span>Rp {{$item->kamar->harga}}</span><span>/ bulan</span>
-                                </div>
-                            </div>
+                            </a>
                         </div>
-                    </a>
-                </div>
-                @endforeach
-                {{$transaksi->links()}}
+                    @endforeach
+                    {{$transaksi->links()}}
                 @else
-                <div class="card shadow-sm p-3 mb-4 bg-white rounded" style="border-left: solid 4px rgb(0, 54, 233);">
-                    <div class="card-block">
+                    <div class="card shadow-sm p-3 mb-4 bg-white rounded"
+                         style="border-left: solid 4px rgb(0, 54, 233);">
+                        <div class="card-block">
                         <span class="">Oops!</span><br>
                         <p><i class="fa-solid fa-circle-info text-primary"></i> Belum Terdapat Favorit.</p>
                     </div>

@@ -2,9 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
 {
@@ -18,12 +16,12 @@ class DatabaseSeeder extends Seeder
         $this->call([
             RoleSeeder::class,
             UserSeeder::class,
-            KamarSeeder::class,
-            FotoSeeder::class,
             KosSeeder::class,
+            FotoSeeder::class,
             PintuSeeder::class,
             PeraturanSeeder::class,
             FasilitasSeeder::class,
+            PengaturanSeeder::class,
             // TransaksiSeeder::class,
         ]);
     }

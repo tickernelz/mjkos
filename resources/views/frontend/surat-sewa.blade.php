@@ -114,7 +114,7 @@
                 <td></td>
             </tr>
             <tr>
-                <td style="width: 20%">Nomer Kamar</td>
+                <td style="width: 20%">Nomer Kos</td>
                 <td style="width: 2%">:</td>
                 <td></td>
             </tr>

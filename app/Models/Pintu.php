@@ -8,6 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Pintu extends Model
 {
     use HasFactory;
+
     protected $table = "pintu";
-    protected $guarded = [];
+    protected $guarded = [
+        'id'
+    ];
+
+    public function kos()
+    {
+        return $this->belongsTo(Kos::class);
+    }
 }

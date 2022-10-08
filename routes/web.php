@@ -1,32 +1,22 @@
 <?php
 
-use App\Http\Controllers\{
-    DashboardController,
+use App\Http\Controllers\{DashboardController,
     FasilitasController,
     FrontendController,
-    KamarController,
     KosController,
     PeraturanController,
     PintuController,
     TransaksiController,
     UserController
 };
-use App\Models\{
-    Foto,
-    Kamar,
-    Kos,
-    Transaksi
-};
+use App\Models\{Foto, Kos, Pengaturan, Transaksi};
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\{
-    Auth,
-    Route
-};
+use Illuminate\Support\Facades\{Auth, Route};
 
 Route::get('/', function () {
-    $kos = Kos::first();
-    $kamar = Kamar::where('status', 0)->where('tampil', 1)->take(4)->get();
-    return view('frontend.home', compact('kos', 'kamar'));
+    $pengaturan = Pengaturan::first();
+    $kos = Kos::where('status', 0)->where('tampil', 1)->take(4)->get();
+    return view('frontend.home', compact('kos', 'pengaturan'));
 });
 
 Route::get('/tracking', function (Request $request) {
@@ -42,20 +32,20 @@ Route::get('/daftar', function () {
     if (Auth::check()) {
         $cek = Transaksi::where('user_id', Auth::user()->id)
             ->where('status', '>', 0)
-            ->pluck('kamar_id');
-        $kamar = Kamar::where('status', 0)
+            ->pluck('kos_id');
+        $kos = Kos::where('status', 0)
             ->whereNotIn('id', $cek)
             ->where('tampil', 1)
             ->paginate(10);
     } else {
-        $kamar = Kamar::where('status', 0)
+        $kos = Kos::where('status', 0)
             ->where('tampil', 1)
             ->paginate(10);
     }
 
-    return view('frontend.daftar-kamar', compact('kamar'));
+    return view('frontend.daftar-kos', compact('kos'));
 });
-Route::get('/detail/kamar/{id}', [FrontendController::class, 'detailKamar'])->name('detail.kamar');
+Route::get('/detail/kos/{id}', [FrontendController::class, 'detailKos'])->name('detail.kos');
 
 
 Auth::routes();
@@ -82,16 +72,13 @@ Route::middleware(['auth'])->group(function () {
         // Kos
         Route::resource('kos', KosController::class);
 
-        // Kamar
-        Route::resource('kamar', KamarController::class);
-
         // Pintu
         Route::resource('pintu', PintuController::class);
 
         // Transaksi
         Route::resource('transaksi', TransaksiController::class);
         Route::get('/status/{id}/{status}', [TransaksiController::class, 'statusUpdate'])->name('transaksi.status');
-        Route::get('/daftar/pengguna', [TransaksiController::class, 'daftarPengguna'])->name('pengguna.kamar');
+        Route::get('/daftar/pengguna', [TransaksiController::class, 'daftarPengguna'])->name('pengguna.kos');
 
         Route::post('/foto/delete/{id}', function ($id) {
             Foto::whereId($id)->delete();

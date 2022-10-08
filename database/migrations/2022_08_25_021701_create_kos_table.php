@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,15 +15,18 @@ class CreateKosTable extends Migration
     public function up()
     {
         Schema::create('kos', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id();
+            $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
             $table->string('nama');
             $table->string('alamat');
             $table->double('address_latitude')->nullable();
             $table->double('address_longitude')->nullable();
-            $table->string('email');
-            $table->string('telp');
+            $table->string('ukuran');
+            $table->double('harga');
+            $table->integer('status');  //0 = kosong; 1 = terisi
+            $table->string('cover');
             $table->text('deskripsi');
-            $table->longText('cover');
+            $table->tinyInteger('tampil')->default(0);
             $table->timestamps();
         });
     }

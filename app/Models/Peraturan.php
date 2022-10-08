@@ -8,6 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Peraturan extends Model
 {
     use HasFactory;
+
     protected $table = "peraturan";
-    protected $guarded = [];
+    protected $guarded = [
+        'id'
+    ];
+
+    public function kos()
+    {
+        return $this->belongsTo(Kos::class);
+    }
 }
