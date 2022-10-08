@@ -1,0 +1,38 @@
+.modal-backdrop.show {
+    display: none;
+}
+
+.img-content{
+    width:100%; 
+    height:200px;
+    background-size: cover; 
+    background-repeat: no-repeat; 
+    background-position: center;
+  }
+
+  .img-proc {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .img-proc:hover .img-proc__content {
+    opacity: 1;
+    cursor: pointer;
+  
+  }
+  
+  
+  .img-proc__content {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    opacity: 0;
+    transition: opacity .2s ease-in-out;
+  }
