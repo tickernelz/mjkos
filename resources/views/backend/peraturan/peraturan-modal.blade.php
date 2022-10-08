@@ -13,10 +13,11 @@
             <div class="modal-footer border-0">
                 <button class="btn btn-danger" type="button" data-dismiss="modal">Batal</button>
                 <a class="btn btn-primary" href="{{ route('logout') }}"
-                    onclick="event.preventDefault(); document.getElementById('user-delete-form').submit();">
+                   onclick="event.preventDefault(); document.getElementById('user-delete-form').submit();">
                     Oke
                 </a>
-                <form id="user-delete-form" method="POST" action="{{ route('peraturan.destroy', ['peraturan' => $data->id]) }}">
+                <form id="user-delete-form" method="POST"
+                      action="{{ route('peraturan.destroy', [$kos->id, $data->id]) }}">
                     @csrf
                     @method('DELETE')
                     <input type="hidden" name="delete_id" id="delete_id">

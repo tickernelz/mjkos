@@ -74,7 +74,12 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/kos/{kos_id}/fasilitas/delete/{fas_id}', [FasilitasController::class, 'destroy'])->name('fasilitas.destroy');
 
         // Peraturan
-        Route::resource('peraturan', PeraturanController::class);
+        Route::get('/kos/{kos_id}/peraturan', [PeraturanController::class, 'index'])->name('peraturan.index');
+        Route::get('/kos/{kos_id}/peraturan/create', [PeraturanController::class, 'create'])->name('peraturan.create');
+        Route::post('/kos/{kos_id}/peraturan/store', [PeraturanController::class, 'store'])->name('peraturan.store');
+        Route::get('/kos/{kos_id}/peraturan/edit/{per_id}', [PeraturanController::class, 'edit'])->name('peraturan.edit');
+        Route::put('/kos/{kos_id}/peraturan/update/{per_id}', [PeraturanController::class, 'update'])->name('peraturan.update');
+        Route::delete('/kos/{kos_id}/peraturan/delete/{per_id}', [PeraturanController::class, 'destroy'])->name('peraturan.destroy');
 
         // Pintu
         Route::resource('pintu', PintuController::class);

@@ -2,107 +2,71 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kos;
 use App\Models\Peraturan;
 use Illuminate\Http\Request;
 
 class PeraturanController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function index($id)
     {
-        $peraturan = Peraturan::all();
-        return view('backend.peraturan.index', compact('peraturan'));
+        $kos = Kos::whereId($id)->first();
+        $peraturan = Peraturan::where('kos_id', $kos->id)->get();
+        return view('backend.peraturan.index', compact('peraturan', 'kos'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function create($kos_id)
     {
-        return view('backend.peraturan.add');
+        $kos = Kos::whereId($kos_id)->first();
+        return view('backend.peraturan.add', compact('kos'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(Request $request, $kos_id)
     {
         // Validations
         $request->validate([
-            'nama'          => 'required',
+            'nama' => 'required',
         ]);
 
         Peraturan::create([
-            'nama'          => $request->nama,
+            'kos_id' => $kos_id,
+            'nama' => $request->nama,
         ]);
 
-        return redirect()->route('peraturan.index')->with('success', 'Peraturan Berhasil ditambah!.');
+        return redirect()->route('peraturan.index', $kos_id)->with('success', 'Peraturan Berhasil ditambah!.');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\peraturan  $peraturan
-     * @return \Illuminate\Http\Response
-     */
     public function show(peraturan $peraturan)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\peraturan  $peraturan
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function edit($kos_id, $id)
     {
+        $kos = Kos::whereId($kos_id)->first();
         $peraturan = Peraturan::whereId($id)->first();
-        return view('backend.peraturan.edit', compact('peraturan'));
+        return view('backend.peraturan.edit', compact('peraturan', 'kos'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\peraturan  $peraturan
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function update(Request $request, $kos_id, $id)
     {
         // Validations
         $request->validate([
-            'nama'          => 'required',
+            'nama' => 'required',
         ]);
 
         Peraturan::whereId($id)->update([
-            'nama'          => $request->nama,
+            'nama' => $request->nama,
         ]);
 
-        return redirect()->route('peraturan.index')->with('success', 'Peraturan Berhasil diubah!.');
+        return redirect()->route('peraturan.index', $kos_id)->with('success', 'Peraturan Berhasil diubah!.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\peraturan  $peraturan
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id, Request $request)
+    public function destroy($kos_id, $id)
     {
-        $delete = Peraturan::whereId($request->delete_id)->delete();
+        $delete = Peraturan::whereId($id)->delete();
         if ($delete) {
-            return redirect()->route('peraturan.index')->with('success', 'Peraturan Berhasil dihapus!.');
+            return redirect()->route('peraturan.index', $kos_id)->with('success', 'Peraturan Berhasil dihapus!.');
         } else {
             return redirect()->back()->with('error', 'Peraturan Gagal dihapus!.');
         }

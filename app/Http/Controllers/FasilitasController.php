@@ -30,10 +30,11 @@ class FasilitasController extends Controller
         ]);
 
         Fasilitas::create([
+            'kos_id' => $kos_id,
             'nama' => $request->nama,
         ]);
 
-        return redirect()->route('fasilitas.index')->with('success', 'Fasilitas Berhasil ditambah!.');
+        return redirect()->route('fasilitas.index', $kos_id)->with('success', 'Fasilitas Berhasil ditambah!.');
     }
 
     public function show(fasilitas $fasilitas)
@@ -48,25 +49,25 @@ class FasilitasController extends Controller
         return view('backend.fasilitas.edit', compact('kos', 'fasilitas'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $kos_id, $id)
     {
         // Validations
         $request->validate([
-            'nama'          => 'required',
+            'nama' => 'required',
         ]);
 
         Fasilitas::whereId($id)->update([
-            'nama'          => $request->nama,
+            'nama' => $request->nama,
         ]);
 
-        return redirect()->route('fasilitas.index')->with('success', 'Fasilitas Berhasil diubah!.');
+        return redirect()->route('fasilitas.index', $kos_id)->with('success', 'Fasilitas Berhasil diubah!.');
     }
 
-    public function destroy($id, Request $request)
+    public function destroy($kos_id, $id)
     {
-        $delete = Fasilitas::whereId($request->delete_id)->delete();
+        $delete = Fasilitas::whereId($id)->delete();
         if ($delete) {
-            return redirect()->route('fasilitas.index')->with('success', 'Fasilitas Berhasil dihapus!.');
+            return redirect()->route('fasilitas.index', $kos_id)->with('success', 'Fasilitas Berhasil dihapus!.');
         } else {
             return redirect()->back()->with('error', 'Fasilitas Gagal dihapus!.');
         }

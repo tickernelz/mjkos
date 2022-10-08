@@ -1,7 +1,7 @@
 @extends('backend.layouts.app')
 @section('title','Tambah Fasilitas')
 @section('content')
-    <x-page-form page='create' route="kos.show" kosId="{{$kos->id}}" title="Fasilitas">
+    <x-page-form page='create' route="fasilitas.index" kosId="{{$kos->id}}" title="Fasilitas">
         <form action="{{route('fasilitas.store', $kos->id)}}" method="post">
             @csrf
             <div class="form-group row">
@@ -11,7 +11,7 @@
 
             </div>
             <div class="card-footer text-right border-0">
-                <a class="btn btn-danger mr-3" href="{{ route('kos.show', $kos->id) }}">Batal</a>
+                <a class="btn btn-danger mr-3" href="{{ route('fasilitas.index', $kos->id) }}">Batal</a>
                 <x-tabel-button type="submit" color="primary" title="Simpan"></x-tabel-button>
             </div>
         </form>

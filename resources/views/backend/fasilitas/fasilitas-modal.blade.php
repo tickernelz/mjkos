@@ -1,6 +1,6 @@
 {{-- Delete --}}
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalExample"
-    aria-hidden="true">
+     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content bgdark shadow-2-strong ">
             <div class="modal-header bg-danger">
@@ -17,7 +17,7 @@
                     Oke
                 </a>
                 <form id="user-delete-form" method="POST"
-                      action="{{ route('fasilitas.destroy', [$data->id, $kos->id]) }}">
+                      action="{{ route('fasilitas.destroy', [$kos->id,$data->id]) }}">
                     @csrf
                     @method('DELETE')
                     <input type="hidden" name="delete_id" id="delete_id">
