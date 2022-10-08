@@ -37,7 +37,7 @@
     <section id="icon-boxes" class="icon-boxes">
         <div class="container" data-aos="fade-up">
             <div class="d-flex justify-content-between mb-3">
-                <h2 class="title" style="color: #054a85;">Kos kos pilihan</h2>
+                <h2 class="title" style="color: #054a85;">Kos Pilihan</h2>
                 <a href="/daftar" class="btn btn-light shadow-sm" style="border:1px solid rgb(189, 189, 189)">Lihat
                     Semua</a>
             </div>

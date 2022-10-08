@@ -28,23 +28,8 @@ Route::get('/tracking', function (Request $request) {
     ]);
 })->name('tracking');
 
-Route::get('/daftar', function () {
-    if (Auth::check()) {
-        $cek = Transaksi::where('user_id', Auth::user()->id)
-            ->where('status', '>', 0)
-            ->pluck('kos_id');
-        $kos = Kos::where('status', 0)
-            ->whereNotIn('id', $cek)
-            ->where('tampil', 1)
-            ->paginate(10);
-    } else {
-        $kos = Kos::where('status', 0)
-            ->where('tampil', 1)
-            ->paginate(10);
-    }
-
-    return view('frontend.daftar-kos', compact('kos'));
-});
+Route::get('/daftar', [FrontendController::class, 'cariKos'])->name('daftar');
+Route::post('/daftar/cari', [FrontendController::class, 'cariKos'])->name('cari.kos');
 Route::get('/detail/kos/{id}', [FrontendController::class, 'detailKos'])->name('detail.kos');
 
 

@@ -6,6 +6,7 @@ use App\Models\Fasilitas;
 use App\Models\Kos;
 use App\Models\Peraturan;
 use App\Models\Transaksi;
+use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -26,6 +27,58 @@ class FrontendController extends Controller
         $fasilitas = Fasilitas::where('kos_id', $id)->get();
         $peraturan = Peraturan::where('kos_id', $id)->get();
         return view('frontend.detail-kos', compact('kos', 'fasilitas', 'peraturan', 'transaksi'));
+    }
+
+    public function cariKosProses($lat, $lng, $radius = 40)
+    {
+        $latitude = $lat;
+        $longitude = $lng;
+        $data = DB::table('kos')
+            ->select(DB::raw('*, ( 6371 * acos( cos( radians(' . $latitude . ') ) * cos( radians( address_latitude ) ) * cos( radians( address_longitude ) - radians(' . $longitude . ') ) + sin( radians(' . $latitude . ') ) * sin( radians( address_latitude ) ) ) ) AS distance'))
+            ->get();
+        # Remove kos that are not in the radius
+        $data = $data->filter(function ($value, $key) use ($radius) {
+            return $value->distance <= $radius;
+        });
+        return $data->sortBy('distance');
+    }
+
+    public function cariKos(Request $request)
+    {
+        $lat = $request->latitude;
+        $lng = $request->longitude;
+        $kos = Kos::where('status', 0);
+        $alamat = null;
+        $jarak = null;
+        if ($request->has('latitude') && $request->has('longitude')) {
+            $latitude = $lat;
+            $longitude = $lng;
+            if ($latitude == null || $longitude == null) {
+                $kos_nearby = $kos->get();
+            } else {
+                $kos_nearby = $this->cariKosProses($latitude, $longitude);
+            }
+            $kos = $kos->whereIn('id', $kos_nearby->pluck('id'));
+            $jarak = $kos_nearby->pluck('distance', 'id');
+        }
+        if ($request->alamat != null) {
+            $alamat = $request->alamat;
+        }
+        if (Auth::check()) {
+            $cek = Transaksi::where('user_id', Auth::user()->id)
+                ->where('status', '>', 0)
+                ->pluck('kos_id');
+            $kos = $kos
+                ->whereNotIn('id', $cek)
+                ->where('tampil', 1)
+                ->paginate(10);
+        } else {
+            $kos = $kos
+                ->where('tampil', 1)
+                ->paginate(10);
+        }
+
+        return view('frontend.daftar-kos', compact('kos', 'jarak', 'alamat'));
     }
 
     public function formPengajuan($id, Request $request)
