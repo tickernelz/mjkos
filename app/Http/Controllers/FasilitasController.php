@@ -3,31 +3,34 @@
 namespace App\Http\Controllers;
 
 use App\Models\Fasilitas;
+use App\Models\Kos;
 use Illuminate\Http\Request;
 
 class FasilitasController extends Controller
 {
 
-    public function index()
+    public function index($id)
     {
-        $fasilitas = Fasilitas::all();
-        return view('backend.fasilitas.index', compact('fasilitas'));
+        $kos = Kos::whereId($id)->first();
+        $fasilitas = Fasilitas::where('kos_id', $kos->id)->get();
+        return view('backend.fasilitas.index', compact('kos', 'fasilitas'));
     }
 
-    public function create()
+    public function create($kos_id)
     {
-        return view('backend.fasilitas.add');
+        $kos = Kos::whereId($kos_id)->first();
+        return view('backend.fasilitas.add', compact('kos'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request, $kos_id)
     {
         // Validations
         $request->validate([
-            'nama'          => 'required',
+            'nama' => 'required',
         ]);
 
         Fasilitas::create([
-            'nama'          => $request->nama,
+            'nama' => $request->nama,
         ]);
 
         return redirect()->route('fasilitas.index')->with('success', 'Fasilitas Berhasil ditambah!.');
@@ -38,10 +41,11 @@ class FasilitasController extends Controller
         //
     }
 
-    public function edit($id)
+    public function edit($kos_id, $fas_id)
     {
-        $fasilitas = Fasilitas::whereId($id)->first();
-        return view('backend.fasilitas.edit', compact('fasilitas'));
+        $kos = Kos::whereId($kos_id)->first();
+        $fasilitas = Fasilitas::whereId($fas_id)->first();
+        return view('backend.fasilitas.edit', compact('kos', 'fasilitas'));
     }
 
     public function update(Request $request, $id)

@@ -13,16 +13,16 @@
             <div class="card-header">
                 <h4>{{ 'Daftar '.$title }}</h4>
                 @if ($create == null)
-                <div class="card-header-action">
-                    <div>
-                        @role('pemilik')
-                        <a href="{{ route($routeCreate) }}" class="btn btn-primary create-button"
-                            style="border-radius: 0px !important">
-                            {{ $buttonLabel }}
-                        </a>
-                        @endrole
+                    <div class="card-header-action">
+                        <div>
+                            @role('pemilik')
+                            <a href="{{ route($routeCreate, $kosId ?? null) }}" class="btn btn-primary create-button"
+                               style="border-radius: 0px !important">
+                                {{ $buttonLabel }}
+                            </a>
+                            @endrole
+                        </div>
                     </div>
-                </div>
                 @endif
             </div>
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Fasilitas;
 use App\Models\Foto;
 use App\Models\Kos;
 use Illuminate\Http\Request;
@@ -13,6 +14,13 @@ class KosController extends Controller
     {
         $kos = Kos::where('user_id', auth()->user()->id)->get();
         return view('backend.kos.index', compact('kos'));
+    }
+
+    public function show($id)
+    {
+        $kos = Kos::whereId($id)->first();
+        $fasilitas = Fasilitas::where('kos_id', $kos->id)->get();
+        return view('backend.kos.show', compact('kos', 'fasilitas'));
     }
 
     public function create()

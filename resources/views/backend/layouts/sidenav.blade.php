@@ -13,7 +13,7 @@
                         class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
             @role('pemilik')
             <li class="@if(Request::is('*kos*')) active @endif"><a class="nav-link " href="{{route('kos.index')}}"><i
-                        class="fas fa-home"></i><span>Kos</span></a></li>
+                        class="fas fa-home"></i><span>Kelola Kos</span></a></li>
             @endrole
 
             @role('admin')

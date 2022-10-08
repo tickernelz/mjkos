@@ -62,15 +62,19 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/aktif/pengguna/{user_id}/{aktif}', [UserController::class, 'updateaktif'])->name('pengguna.aktif');
         Route::post('/reset/password', [UserController::class, 'reset'])->name('pengguna.reset');
 
+        // Kos
+        Route::resource('kos', KosController::class);
 
         // Fasilitas
-        Route::resource('fasilitas', FasilitasController::class);
+        Route::get('/kos/{kos_id}/fasilitas', [FasilitasController::class, 'index'])->name('fasilitas.index');
+        Route::get('/kos/{kos_id}/fasilitas/create', [FasilitasController::class, 'create'])->name('fasilitas.create');
+        Route::post('/kos/{kos_id}/fasilitas/store', [FasilitasController::class, 'store'])->name('fasilitas.store');
+        Route::get('/kos/{kos_id}/fasilitas/edit/{fas_id}', [FasilitasController::class, 'edit'])->name('fasilitas.edit');
+        Route::put('/kos/{kos_id}/fasilitas/update/{fas_id}', [FasilitasController::class, 'update'])->name('fasilitas.update');
+        Route::delete('/kos/{kos_id}/fasilitas/delete/{fas_id}', [FasilitasController::class, 'destroy'])->name('fasilitas.destroy');
 
         // Peraturan
         Route::resource('peraturan', PeraturanController::class);
-
-        // Kos
-        Route::resource('kos', KosController::class);
 
         // Pintu
         Route::resource('pintu', PintuController::class);

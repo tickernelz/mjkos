@@ -37,6 +37,10 @@
                         @role('pemilik')
                         <td>
                             <div class="table-actions btn-group">
+                                <a href="{{ route('fasilitas.index', $data->id) }}"
+                                   class="table-action btn btn-info mr-2">
+                                    Fasilitas
+                                </a>
                                 <a href="{{route('kos.edit', $data->id)}}" class="table-action btn btn-primary mr-2"
                                    data-toggle="tooltip" title="Ubah">
                                     <i class="fas fa-edit"></i>

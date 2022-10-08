@@ -6,17 +6,18 @@ use Illuminate\View\Component;
 
 class PageForm extends Component
 {
-    public $title, $page, $route;
+    public $title, $page, $route, $kosId;
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($title, $page, $route)
+    public function __construct($title, $page, $route, $kosId = null)
     {
         $this->title = $title;
         $this->page = $page;
         $this->route = $route;
+        $this->kosId = $kosId;
     }
 
     /**
