@@ -31,12 +31,12 @@
                             <td>{{$transaksi->user->name}}</td>
                         </tr>
                         <tr>
-                            <th scope="row">Nomer Kamar</th>
-                            <td>{{ $transaksi->kamar->pintu->nama }}</td>
+                            <th scope="row">Nama Kos</th>
+                            <td>{{ $transaksi->kos->nama }}</td>
                         </tr>
                         <tr>
                             <th scope="row">Ukuran Kamar</th>
-                            <td>{{ $transaksi->kamar->ukuran }}</td>
+                            <td>{{ $transaksi->kos->ukuran }}</td>
                         </tr>
                         <tr>
                             <th scope="row">Tgl Mulai</th>

@@ -8,8 +8,8 @@
             <tr>
                 <th>No</th>
                 <th>Kode Booking</th>
-                <th>Nama</th>
-                <th>Nomor Kamar</th>
+                <th>Nama User</th>
+                <th>Nama Kos</th>
                 <th>Durasi</th>
                 @role('pemilik')
                 <th>Aksi</th>
@@ -22,7 +22,7 @@
                 <td>{{$key+1}}</td>
                 <td>{{$data->kode}}</td>
                 <td>{{$data->user->name}}</td>
-                <td>{{$data->kamar->pintu->nama}}</td>
+                <td>{{$data->kos->nama}}</td>
                 <td>{{$data->durasi}} Bulan</td>
                 @role('pemilik')
                 <td>
