@@ -27,6 +27,7 @@ class CreateKosTable extends Migration
             $table->string('cover');
             $table->text('deskripsi');
             $table->tinyInteger('tampil')->default(0);
+            $table->integer('jumlah_transaksi')->default(0);
             $table->timestamps();
         });
     }

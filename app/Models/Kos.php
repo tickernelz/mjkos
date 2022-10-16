@@ -14,6 +14,11 @@ class Kos extends Model
         'id'
     ];
 
+    public function hargaNumber()
+    {
+        return number_format($this->harga, 0, ',', '.');
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);

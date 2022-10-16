@@ -31,7 +31,7 @@
                                     </div>
                                     <div class="card-body">
                                         <div>
-                                            <h4 class="card-title fw-bold">Kos Nomor {{$item->kos->pintu->nama}}</h4>
+                                            <h4 class="card-title fw-bold">{{$item->kos->nama}}</h4>
                                             <p class="text-muted my-0">Ukuran : {{$item->kos->ukuran}}</p>
                                             <span
                                                 style="font-size: 14px">Terakhir diupdate {{$item->kos->updated_at->format('d M Y')}}</span>

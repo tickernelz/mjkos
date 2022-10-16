@@ -137,7 +137,7 @@
             </div>
 
             <div class="card-footer text-right border-0">
-                <a class="btn btn-danger mr-3" href="{{ route('fasilitas.index') }}">Batal</a>
+                <a class="btn btn-danger mr-3" href="{{ route('kos.index') }}">Batal</a>
                 <x-tabel-button type="submit" color="primary" title="Simpan"></x-tabel-button>
             </div>
         </form>
