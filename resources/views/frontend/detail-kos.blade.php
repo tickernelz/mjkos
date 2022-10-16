@@ -97,6 +97,23 @@
                             <h6 class="card-title mb-2 fw-bold">Deskripsi</h6>
                             <p>{{$kos->deskripsi}}</p>
                         </div>
+                        <div class="">
+                            <h6 class="card-title mb-2 fw-bold">Alamat</h6>
+                            <p>{{$kos->alamat}}</p>
+                            <div class="form-group">
+                                <input type="text" value="{{$kos->alamat}}"
+                                       class="form-control map-input @error('alamat') is-invalid @enderror"
+                                       id="address-input"
+                                       name="address_address" placeholder="Alamat" hidden>
+                                <input type="hidden" name="address_latitude" id="address-latitude"
+                                       value="{{ $kos->address_latitude ?? '0' }}"/>
+                                <input type="hidden" name="address_longitude" id="address-longitude"
+                                       value="{{ $kos->address_longitude ?? '0' }}"/>
+                            </div>
+                            <div id="address-map-container" style="width:100%;height:400px;margin-bottom: 10px">
+                                <div style="width: 100%; height: 100%" id="address-map"></div>
+                            </div>
+                        </div>
 
                     </div>
                     <div class="col col-lg-4">
@@ -104,7 +121,7 @@
                             <form action="{{route('form.pengajuan',$kos->id)}}" method="get">
                                 @csrf
                                 <div class="card-header" id="tite">
-                                    <h6 class="card-title text-center fw-bold">Rp.{{$kos->harga}}/ Bulan</h6>
+                                    <h6 class="card-title text-center fw-bold">Rp.{{$kos->hargaNumber()}} / Bulan</h6>
                                 </div>
                                 <input type="text" hidden name="biaya" value="{{$kos->harga}}" id="biaya">
                                 <div class="card-body">
@@ -181,4 +198,8 @@
         var today = new Date().toISOString().split('T')[0];
         $('#date')[0].setAttribute('min', today);
     </script>
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&libraries=places&callback=initialize"
+        async defer></script>
+    <script src="{{ asset('js/mapInputFrontend.js') }}"></script>
 @endpush

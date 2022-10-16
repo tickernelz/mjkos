@@ -4,11 +4,12 @@ use App\Http\Controllers\{DashboardController,
     FasilitasController,
     FrontendController,
     KosController,
+    MetodePembayaransController,
+    MetodePembayaransPemilikController,
     PeraturanController,
     PintuController,
     TransaksiController,
-    UserController
-};
+    UserController};
 use App\Models\{Foto, Kos, Pengaturan, Transaksi};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\{Auth, Route};
@@ -50,6 +51,12 @@ Route::middleware(['auth'])->group(function () {
         // Kos
         Route::resource('kos', KosController::class);
 
+        // Metode Pembayaran
+        Route::resource('metode_pembayaran', MetodePembayaransController::class);
+
+        // Metode Pembayaran Pemilik
+        Route::resource('metode_pembayaran_pemilik', MetodePembayaransPemilikController::class);
+
         // Fasilitas
         Route::get('/kos/{kos_id}/fasilitas', [FasilitasController::class, 'index'])->name('fasilitas.index');
         Route::get('/kos/{kos_id}/fasilitas/create', [FasilitasController::class, 'create'])->name('fasilitas.create');
@@ -65,9 +72,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/kos/{kos_id}/peraturan/edit/{per_id}', [PeraturanController::class, 'edit'])->name('peraturan.edit');
         Route::put('/kos/{kos_id}/peraturan/update/{per_id}', [PeraturanController::class, 'update'])->name('peraturan.update');
         Route::delete('/kos/{kos_id}/peraturan/delete/{per_id}', [PeraturanController::class, 'destroy'])->name('peraturan.destroy');
-
-        // Pintu
-        Route::resource('pintu', PintuController::class);
 
         // Transaksi
         Route::resource('transaksi', TransaksiController::class);

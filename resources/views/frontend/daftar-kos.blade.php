@@ -58,7 +58,7 @@
                                     </div>
                                     <div class="card-body">
                                         <div>
-                                            <h4 class="card-title fw-bold">Kos Nomor {{$item->nama}}</h4>
+                                            <h4 class="card-title fw-bold">{{$item->nama}}</h4>
                                             <p class="text-muted my-0">Ukuran : {{$item->ukuran}}</p>
                                             @if ($jarak != null)
                                                 <p class="text-muted my-0">Jarak : {{round($jarak[$item->id], 2)}}

@@ -89,10 +89,12 @@ class FrontendController extends Controller
             ->where('status', '!=', 0)
             ->first();
         $kos = Kos::whereId($id)->first();
+        $pemilik = $kos->user;
+        $metode_pembayaran = $pemilik->MetodePembayaranPemilik;
         $biaya = $request->biaya;
         $tgl_mulai = $request->date;
         $durasi = $request->durasi;
-        return view('frontend.pengajuan', compact('transaksi', 'kos', 'biaya', 'tgl_mulai', 'durasi'));
+        return view('frontend.pengajuan', compact('transaksi', 'kos', 'biaya', 'tgl_mulai', 'durasi', 'metode_pembayaran'));
     }
 
     public function updatePengajuan($id, Request $request)

@@ -47,9 +47,6 @@ class TransaksiController extends Controller
             Transaksi::whereId($id)->update([
                 'status' => 2
             ]);
-            Kos::whereId($kos_id)->update([
-                'status' => 2
-            ]);
             return redirect()->back()->with('success', 'Pengajuan Berhasil disetujui!.');
         } elseif ($status == -1) {
             Transaksi::whereId($id)->update([
@@ -61,7 +58,7 @@ class TransaksiController extends Controller
                 'status' => 4
             ]);
             Kos::whereId($kos_id)->update([
-                'status' => 1
+                'jumlah_transaksi' => + 1
             ]);
             return redirect()->back()->with('success', 'Konfirmasi Pembayaran Berhasil dilakukan!.');
         } elseif ($status == 5) {
@@ -73,6 +70,9 @@ class TransaksiController extends Controller
             Transaksi::whereId($id)->update([
                 'status' => 6
             ]);
+            Kos::whereId($kos_id)->update([
+                'jumlah_transaksi' => + 1
+            ]);
             return redirect()->back()->with('success', 'Pengajuan Perpanjang Berhasil setujui!.');
         } elseif ($status == 8) {
             $tr = Transaksi::whereId($id)->first();
@@ -83,6 +83,9 @@ class TransaksiController extends Controller
                 'status' => 8,
                 'tgl_mulai' => $mulai,
                 'tgl_selesai' => $selesai
+            ]);
+            Kos::whereId($kos_id)->update([
+                'jumlah_transaksi' => + 1
             ]);
             return redirect()->back()->with('success', 'Pengajuan Perpanjang Berhasil setujui!.');
         }
