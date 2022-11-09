@@ -1,81 +1,148 @@
-function initialize() {
+var Map = {
+    mapContainer: document.getElementById('address-map'),
+    inputAutocomplete: document.getElementById('address-input'),
+    inputLat: $("input[name=address_latitude]"),
+    inputLng: $("input[name=address_longitude]"),
+    map: {},
+    geocoder: new google.maps.Geocoder(),
+    autocomplete: {},
+    init: function init() {
+        var _this = this;
 
-    $('form').on('keyup keypress', function(e) {
-        var keyCode = e.keyCode || e.which;
-        if (keyCode === 13) {
-            e.preventDefault();
-            return false;
+        this.autocomplete = new google.maps.places.Autocomplete(this.inputAutocomplete);
+        var latLng = new google.maps.LatLng(parseFloat(this.inputLat.val()), parseFloat(this.inputLng.val()));
+
+        if (this.inputLat.val() && this.inputLng.val()) {
+            latLng = new google.maps.LatLng(this.inputLat.val(), this.inputLng.val());
         }
-    });
-    const locationInputs = document.getElementsByClassName("map-input");
 
-    const autocompletes = [];
-    const geocoder = new google.maps.Geocoder;
-    for (let i = 0; i < locationInputs.length; i++) {
-
-        const input = locationInputs[i];
-        const fieldKey = input.id.replace("-input", "");
-        const isEdit = document.getElementById(fieldKey + "-latitude").value != '' && document.getElementById(fieldKey + "-longitude").value != '';
-
-        const latitude = parseFloat(document.getElementById(fieldKey + "-latitude").value) || -2.2208587701909823;
-        const longitude = parseFloat(document.getElementById(fieldKey + "-longitude").value) || 113.90999364386458;
-
-        const map = new google.maps.Map(document.getElementById(fieldKey + '-map'), {
-            center: {lat: latitude, lng: longitude},
-            zoom: 13
-        });
-        const marker = new google.maps.Marker({
-            map: map,
-            position: {lat: latitude, lng: longitude},
+        this.map = new google.maps.Map(this.mapContainer, {
+            zoom: 15,
+            center: latLng,
         });
 
-        marker.setVisible(isEdit);
+        var marker = new google.maps.Marker({
+            position: latLng,
+            map: _this.map,
+            draggable: true
+        });
 
-        const autocomplete = new google.maps.places.Autocomplete(input);
-        autocomplete.key = fieldKey;
-        autocompletes.push({input: input, map: map, marker: marker, autocomplete: autocomplete});
-    }
+        this.map.markers = [marker];
 
-    for (let i = 0; i < autocompletes.length; i++) {
-        const input = autocompletes[i].input;
-        const autocomplete = autocompletes[i].autocomplete;
-        const map = autocompletes[i].map;
-        const marker = autocompletes[i].marker;
+        this.map.setCenter(latLng);
 
-        google.maps.event.addListener(autocomplete, 'place_changed', function () {
-            marker.setVisible(false);
-            const place = autocomplete.getPlace();
+        marker.addListener('dragend', function () {
+            _this.inputLat.val(marker.getPosition().lat());
 
-            geocoder.geocode({'placeId': place.place_id}, function (results, status) {
-                if (status === google.maps.GeocoderStatus.OK) {
-                    const lat = results[0].geometry.location.lat();
-                    const lng = results[0].geometry.location.lng();
-                    setLocationCoordinates(autocomplete.key, lat, lng);
-                }
+            _this.inputLng.val(marker.getPosition().lng());
+
+            _this.geocodePosition(marker.getPosition());
+
+            _this.map.setCenter(marker.getPosition());
+        });
+
+        this.autocomplete.addListener('place_changed', function () {
+            _this.map.markers.forEach(function (marker) {
+                marker.setMap(null);
             });
 
-            if (!place.geometry) {
-                window.alert("No details available for input: '" + place.name + "'");
-                input.value = "";
-                return;
-            }
+            var place = _this.autocomplete.getPlace();
 
-            if (place.geometry.viewport) {
-                map.fitBounds(place.geometry.viewport);
-            } else {
-                map.setCenter(place.geometry.location);
-                map.setZoom(17);
-            }
-            marker.setPosition(place.geometry.location);
-            marker.setVisible(true);
+            _this.inputLat.val(place.geometry.location.lat());
 
+            _this.inputLng.val(place.geometry.location.lng());
+
+            var latlng = new google.maps.LatLng(place.geometry.location.lat(), place.geometry.location.lng()); // create marker
+
+            var marker = new google.maps.Marker({
+                position: latlng,
+                map: _this.map,
+                draggable: true
+            });
+
+            _this.map.markers = [marker];
+
+            _this.map.setCenter(latlng);
+
+            marker.addListener('dragend', function () {
+
+                _this.inputLat.val(marker.getPosition().lat());
+
+                _this.inputLng.val(marker.getPosition().lng());
+
+                _this.geocodePosition(marker.getPosition());
+
+                _this.map.setCenter(marker.getPosition());
+            });
         });
-    }
-}
+    },
+    geocodePosition: function geocodePosition(pos) {
+        var _this = this;
 
-function setLocationCoordinates(key, lat, lng) {
-    const latitudeField = document.getElementById(key + "-" + "latitude");
-    const longitudeField = document.getElementById(key + "-" + "longitude");
-    latitudeField.value = lat;
-    longitudeField.value = lng;
-}
+        this.geocoder.geocode({
+            latLng: pos
+        }, function (responses) {
+            if (responses && responses.length > 0) {
+                _this.updateMarkerAddress(responses[0].formatted_address);
+            } else {
+                _this.updateMarkerAddress('Nenhuma coordenada encontrada');
+            }
+        });
+    },
+    updateMarkerAddress: function updateMarkerAddress(str) {
+        this.inputAutocomplete.value = str;
+    },
+    renderMap: function renderMap($el) {
+        var _this = this;
+
+        var $markers = $el.find('.marker');
+        var args = {
+            zoom: 16,
+            center: new google.maps.LatLng(0, 0),
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            streetViewControl: false,
+            mapTypeControl: false
+        };
+        var map = new google.maps.Map($el[0], args);
+        map.markers = [];
+        $markers.each(function () {
+            _this.add_marker($(this), map);
+        });
+
+        _this.center_map(map);
+    },
+    add_marker: function add_marker($marker, map) {
+        var latlng = new google.maps.LatLng($marker.attr('data-lat'), $marker.attr('data-lng'));
+        var marker = new google.maps.Marker({
+            position: latlng,
+            map: map
+        });
+        map.markers.push(marker);
+    },
+
+    delete_markers: function delete_markers(map) {
+        for (var i = 0; i < map.markers.length; i++) {
+            map.markers[i].setMap(null);
+        }
+
+        map.markers = [];
+    },
+
+    center_map: function center_map(map) {
+        var bounds = new google.maps.LatLngBounds();
+        $.each(map.markers, function (i, marker) {
+            var latlng = new google.maps.LatLng(marker.position.lat(), marker.position.lng());
+            bounds.extend(latlng);
+        });
+
+        if (map.markers.length == 1) {
+            map.setCenter(bounds.getCenter());
+            map.setZoom(16);
+        } else {
+            map.fitBounds(bounds);
+        }
+    }
+};
+$(document).ready(function () {
+    Map.init();
+});
