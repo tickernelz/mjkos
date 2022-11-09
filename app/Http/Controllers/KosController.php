@@ -48,6 +48,7 @@ class KosController extends Controller
         $new_cover = time() . '_' . Auth::user()->name . "." . $cover->getClientOriginalExtension();
         $destination = 'images/kos/';
         $cover->move($destination, $new_cover);
+        $conv_harga = str_replace(',', '', $request->harga);
 
         $kos = Kos::create([
             'user_id' => auth()->user()->id,
@@ -60,7 +61,7 @@ class KosController extends Controller
             'ukuran' => $ukuran,
             'tampil' => $request->tampil,
             'status' => $request->status,
-            'harga' => $request->harga,
+            'harga' => $conv_harga,
         ]);
 
         foreach ($request->multiple as $key => $value) {
@@ -93,6 +94,8 @@ class KosController extends Controller
             'status' => 'required',
             'harga' => 'required',
         ]);
+
+        $conv_harga = str_replace(',', '', $request->harga);
 
         if ($request->multiple) {
             foreach ($request->multiple as $key => $value) {
@@ -128,7 +131,7 @@ class KosController extends Controller
                 'ukuran' => $request->ukuran,
                 'tampil' => $request->tampil,
                 'status' => $request->status,
-                'harga' => $request->harga,
+                'harga' => $conv_harga,
             ]);
         } else {
             Kos::whereId($id)->update([
@@ -140,7 +143,7 @@ class KosController extends Controller
                 'ukuran' => $request->ukuran,
                 'tampil' => $request->tampil,
                 'status' => $request->status,
-                'harga' => $request->harga,
+                'harga' => $conv_harga,
             ]);
         }
 

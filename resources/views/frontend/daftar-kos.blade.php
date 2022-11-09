@@ -36,6 +36,24 @@
                         </div>
                         <button class="btn btn-outline-light" type="submit" id="cari-btn">Cari</button>
                     </div>
+                    {{--Filter--}}
+                    <div class="filter_harga" style="margin-top: 2em">
+                        <h6 class="fw-bold text-black mb-3">Harga</h6>
+
+                        <div>
+                            <label class="filter__label">
+                                <input type="text" class="filter__input" name="fil_harga_min">
+                            </label>
+
+                            <label class="filter__label">
+                                <input type="text" class="filter__input" name="fil_harga_max">
+                            </label>
+                        </div>
+
+                        <div id="sliderPrice" class="filter__slider-price" data-min="{{$harga_min}}"
+                             data-max="{{$harga_max}}"
+                             data-step="5"></div>
+                    </div>
                 </form>
             </div>
         </div>
@@ -68,7 +86,7 @@
                                                 style="font-size: 14px">Terakhir diupdate {{$item->updated_at->format('d M Y')}}</span>
                                         </div>
                                         <div class="d-flex justify-content-between total font-weight-bold mt-3">
-                                            <span>Rp {{$item->harga}}</span><span>/ bulan</span>
+                                            <span>Rp {{$item->hargaNumber()}}</span><span>/ bulan</span>
                                         </div>
                                     </div>
                                 </div>
@@ -81,9 +99,14 @@
         </section>
     </div>
 @endsection
+@push('styles')
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.6.1/nouislider.css" rel="stylesheet">
+    <link href="{{asset('css/sliderHarga.css')}}" rel="stylesheet">
+@endpush
 @push('scripts')
     <script type="text/javascript"
             src="https://maps.google.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&libraries=places"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.6.1/nouislider.min.js"/>
     <script>
         $(document).ready(function () {
             $("#latitudeArea").addClass("d-none");
@@ -106,5 +129,39 @@
                 $("#longtitudeArea").removeClass("d-none");
             });
         }
+    </script>
+    <script>
+        const slider = document.getElementById('sliderPrice');
+        const rangeMin = parseInt(slider.dataset.min);
+        const rangeMax = parseInt(slider.dataset.max);
+        const step = parseInt(slider.dataset.step);
+        const filterInputs = document.querySelectorAll('input.filter__input');
+
+        noUiSlider.create(slider, {
+            start: [rangeMin, rangeMax],
+            connect: true,
+            step: step,
+            range: {
+                'min': rangeMin,
+                'max': rangeMax
+            },
+
+            // make numbers whole
+            format: {
+                to: value => value,
+                from: value => value
+            }
+        });
+
+        // bind inputs with noUiSlider
+        slider.noUiSlider.on('update', (values, handle) => {
+            filterInputs[handle].value = values[handle];
+        });
+
+        filterInputs.forEach((input, indexInput) => {
+            input.addEventListener('change', () => {
+                slider.noUiSlider.setHandle(indexInput, input.value);
+            })
+        });
     </script>
 @endpush
