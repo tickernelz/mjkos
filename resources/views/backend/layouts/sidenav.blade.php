@@ -1,10 +1,10 @@
 <div class="main-sidebar sidebar-style-2">
     <aside id="sidebar-wrapper">
         <div class="sidebar-brand">
-            <a href="index.html">MJKOS</a>
+            <a href="{{route('home')}}">MJKOS</a>
         </div>
         <div class="sidebar-brand sidebar-brand-sm">
-            <a href="index.html">HI..</a>
+            <a href="{{route('home')}}">MJKOS</a>
         </div>
         <ul class="sidebar-menu">
             <li class="menu-header">Admin Panel</li>

@@ -18,7 +18,7 @@ Route::get('/', function () {
     $pengaturan = Pengaturan::first();
     $kos = Kos::where('status', 0)->where('tampil', 1)->take(4)->get();
     return view('frontend.home', compact('kos', 'pengaturan'));
-});
+})->name('home');
 
 Route::get('/tracking', function (Request $request) {
     $kode = $request->kode;

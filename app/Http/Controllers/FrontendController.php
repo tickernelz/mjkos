@@ -50,6 +50,11 @@ class FrontendController extends Controller
         $kos = Kos::where('status', 0);
         $alamat = null;
         $jarak = null;
+        $harga_min = $kos->min('harga');
+        $harga_max = $kos->max('harga');
+        // Filter
+        $fil_harga_min = $request->fil_harga_min ?? $harga_min;
+        $fil_harga_max = $request->fil_harga_max ?? $harga_max;
         if ($request->has('latitude') && $request->has('longitude')) {
             $latitude = $lat;
             $longitude = $lng;
@@ -71,14 +76,18 @@ class FrontendController extends Controller
             $kos = $kos
                 ->whereNotIn('id', $cek)
                 ->where('tampil', 1)
+                ->where('harga', '>=', $fil_harga_min)
+                ->where('harga', '<=', $fil_harga_max)
                 ->paginate(10);
         } else {
             $kos = $kos
                 ->where('tampil', 1)
+                ->where('harga', '>=', $fil_harga_min)
+                ->where('harga', '<=', $fil_harga_max)
                 ->paginate(10);
         }
 
-        return view('frontend.daftar-kos', compact('kos', 'jarak', 'alamat'));
+        return view('frontend.daftar-kos', compact('kos', 'jarak', 'alamat', 'harga_min', 'harga_max'));
     }
 
     public function formPengajuan($id, Request $request)
