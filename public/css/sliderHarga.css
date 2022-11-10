@@ -40,6 +40,11 @@
     transform: scale(1.1);
 }
 
+.pagination {
+    margin-top: 3em;
+    justify-content: center;
+}
+
 /* styles for filter */
 .filter_harga {
     display: flex;

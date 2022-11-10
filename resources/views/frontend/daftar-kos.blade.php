@@ -21,38 +21,53 @@
                 <div class="section-title">
                     <h4 class="fw-bold text-light">Cari Kos</h4>
                 </div>
-                <form action="{{ route('cari.kos') }}" method="post">
+                <form action="{{ route('cari.kos') }}" method="get">
                     @csrf
                     <div class="input-group mb-3">
                         <input type="text" name="alamat" id="autocomplete" class="form-control"
-                               placeholder="Masukkan Alamat" value="{{ $alamat }}">
+                               placeholder="Masukkan Alamat" value="{{ Session::get('alamat') }}">
 
                         <div class="form-group" id="latitudeArea">
-                            <input type="text" id="latitude" name="latitude" class="form-control" hidden>
+                            <input type="text" id="latitude" name="latitude" class="form-control"
+                                   value="{{ Session::get('lat') }}" hidden>
                         </div>
 
                         <div class="form-group" id="longtitudeArea">
-                            <input type="text" name="longitude" id="longitude" class="form-control" hidden>
+                            <input type="text" name="longitude" id="longitude" class="form-control"
+                                   value="{{ Session::get('lng') }}" hidden>
                         </div>
                         <button class="btn btn-outline-light" type="submit" id="cari-btn">Cari</button>
                     </div>
                     {{--Filter--}}
-                    <div class="filter_harga" style="margin-top: 2em">
-                        <h6 class="fw-bold text-black mb-3">Harga</h6>
+                    <div class="row">
+                        <div class="col-xl-4">
+                            <div class="filter_harga" style="margin-top: 2em">
+                                <h6 class="fw-bold text-black mb-3">Harga</h6>
 
-                        <div>
-                            <label class="filter__label">
-                                <input type="text" class="filter__input" name="fil_harga_min">
-                            </label>
+                                <div>
+                                    <label class="filter__label">
+                                        <input type="text" class="filter__input" name="fil_harga_min" id="fil_harga_min"
+                                               value="{{ Session::get('fil_harga_min') ?? $harga_min }}">
+                                    </label>
 
-                            <label class="filter__label">
-                                <input type="text" class="filter__input" name="fil_harga_max">
-                            </label>
+                                    <label class="filter__label">
+                                        <input type="text" class="filter__input" name="fil_harga_max" id="fil_harga_max"
+                                               value="{{ Session::get('fil_harga_max') ?? $harga_max }}">
+                                    </label>
+                                </div>
+
+                                <div id="sliderPrice" class="filter__slider-price" data-min="{{$harga_min}}"
+                                     data-max="{{$harga_max}}"
+                                     data-step="5"></div>
+                            </div>
                         </div>
-
-                        <div id="sliderPrice" class="filter__slider-price" data-min="{{$harga_min}}"
-                             data-max="{{$harga_max}}"
-                             data-step="5"></div>
+                        <div class="col-xl-4">
+                            <div class="filter_harga" style="margin-top: 2em">
+                                <label for="fil_populer">Paling Populer</label>
+                                <input id="fil_populer" type="checkbox" name="fil_populer"
+                                       @if(Session::get('fil_populer') == "on") checked @endif>
+                            </div>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -79,8 +94,10 @@
                                             <h4 class="card-title fw-bold">{{$item->nama}}</h4>
                                             <p class="text-muted my-0">Ukuran : {{$item->ukuran}}</p>
                                             @if ($jarak != null)
-                                                <p class="text-muted my-0">Jarak : {{round($jarak[$item->id], 2)}}
-                                                    KM</p>
+                                                @if(round($jarak[$item->id], 2) != 0)
+                                                    <p class="text-muted my-0">Jarak : {{round($jarak[$item->id], 2)}}
+                                                        KM</p>
+                                                @endif
                                             @endif
                                             <span
                                                 style="font-size: 14px">Terakhir diupdate {{$item->updated_at->format('d M Y')}}</span>
@@ -93,7 +110,7 @@
                             </a>
                         </div>
                     @endforeach
-                    {{$kos->links()}}
+                    {!! $kos->links() !!}
                 </div>
             </div>
         </section>
@@ -134,11 +151,13 @@
         const slider = document.getElementById('sliderPrice');
         const rangeMin = parseInt(slider.dataset.min);
         const rangeMax = parseInt(slider.dataset.max);
+        const requestMin = parseInt(document.getElementById('fil_harga_min').value);
+        const requestMax = parseInt(document.getElementById('fil_harga_max').value);
         const step = parseInt(slider.dataset.step);
         const filterInputs = document.querySelectorAll('input.filter__input');
 
         noUiSlider.create(slider, {
-            start: [rangeMin, rangeMax],
+            start: [requestMin, requestMax],
             connect: true,
             step: step,
             range: {

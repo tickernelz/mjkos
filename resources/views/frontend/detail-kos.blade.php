@@ -46,7 +46,8 @@
             <div class="container">
                 <div class="text-start mt-2">
                     <h4 class="card-title fw-bold">{{ $kos->nama }}</h4>
-                    <p class="text-muted mb-2">Ukuran : {{$kos->ukuran}}</p>
+                    <p class="text-muted" style="margin-bottom: -1px">Ukuran : {{$kos->ukuran}}</p>
+                    <p class="text-muted mb-2">Jumlah Transaksi : {{$kos->jumlah_transaksi}}</p>
                     <span style="font-size: 15px">Terakhir {{$kos->updated_at}}</span>
                 </div>
                 <input type="text" id="harga" hidden value="{{$kos->harga}}">
