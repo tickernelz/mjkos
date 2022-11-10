@@ -7,9 +7,9 @@ use App\Http\Controllers\{DashboardController,
     MetodePembayaransController,
     MetodePembayaransPemilikController,
     PeraturanController,
-    PintuController,
     TransaksiController,
-    UserController};
+    UserController
+};
 use App\Models\{Foto, Kos, Pengaturan, Transaksi};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\{Auth, Route};
@@ -30,7 +30,7 @@ Route::get('/tracking', function (Request $request) {
 })->name('tracking');
 
 Route::get('/daftar', [FrontendController::class, 'cariKos'])->name('daftar');
-Route::post('/daftar/cari', [FrontendController::class, 'cariKos'])->name('cari.kos');
+Route::get('/daftar/cari', [FrontendController::class, 'cariKos'])->name('cari.kos');
 Route::get('/detail/kos/{id}', [FrontendController::class, 'detailKos'])->name('detail.kos');
 
 
