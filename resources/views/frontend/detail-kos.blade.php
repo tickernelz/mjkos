@@ -150,6 +150,11 @@
                                 </div>
                             </form>
                         </div>
+                        <div class="card float-end shadow-lg text-center" style="width: 18rem; margin-top: 5rem">
+                            <a type="button" href="/chat/{{$kos->user->id}}" class="btn btn-secondary" style="width:100%">
+                                Hubungi Pemilik
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
