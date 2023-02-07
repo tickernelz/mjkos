@@ -6,6 +6,7 @@
         <nav id="navbar" class="navbar">
             <ul>
                 <li><a class="nav-link scrollto {{Request::path() == '/' ? 'active':''}}" href="/">Home</a></li>
+                <li><a class="nav-link scrollto {{Request::path() == 'chat' ? 'active':''}}" href="/chat">Chat</a></li>
                 <li><a class="nav-link scrollto {{Request::path() == 'daftar' ? 'active':''}}" href="/daftar">Daftar
                         Kos</a></li>
                 @if (!Auth::check())
