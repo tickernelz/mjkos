@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up()
     {
-        Schema::create('metode_pembayaran_pemiliks', function (Blueprint $table) {
+        Schema::create('rekening_pembayarans', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(MetodePembayaran::class)->constrained()->cascadeOnDelete();
@@ -21,6 +21,6 @@ return new class extends Migration {
 
     public function down()
     {
-        Schema::dropIfExists('metode_pembayaran_pemiliks');
+        Schema::dropIfExists('rekening_pembayarans');
     }
 };

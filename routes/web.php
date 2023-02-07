@@ -5,7 +5,7 @@ use App\Http\Controllers\{DashboardController,
     FrontendController,
     KosController,
     MetodePembayaransController,
-    MetodePembayaransPemilikController,
+    RekeningPembayaranController,
     PeraturanController,
     TransaksiController,
     UserController
@@ -55,7 +55,7 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('metode_pembayaran', MetodePembayaransController::class);
 
         // Metode Pembayaran Pemilik
-        Route::resource('metode_pembayaran_pemilik', MetodePembayaransPemilikController::class);
+        Route::resource('rekening_pembayaran', RekeningPembayaranController::class);
 
         // Fasilitas
         Route::get('/kos/{kos_id}/fasilitas', [FasilitasController::class, 'index'])->name('fasilitas.index');

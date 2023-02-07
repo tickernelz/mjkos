@@ -1,7 +1,7 @@
 @extends('backend.layouts.app')
-@section('title','Edit Metode Pembayaran')
+@section('title','Edit Rekening Pembayaran')
 @section('content')
-    <x-page-form page='edit' route="metode_pembayaran_pemilik.index" title="Metode Pembayaran">
+    <x-page-form page='edit' route="rekening_pembayaran.index" title="Rekening Pembayaran">
         <div class="mt-2 mb-3">
             <div class="">
                 <h4 class="text-center">Gambar</h4>
@@ -10,13 +10,13 @@
                  class="img-thumbnail mx-auto d-block img-fluid" alt="..." style="width:100%; max-width:200px;">
         </div>
 
-        <form action="{{route('metode_pembayaran_pemilik.update', $metode->id)}}" method="POST"
+        <form action="{{route('rekening_pembayaran.update', $metode->id)}}" method="POST"
               enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
             <div class="">
-                <h4 class="text-center">Data Metode Pembayaran</h4>
+                <h4 class="text-center">Data Rekening Pembayaran</h4>
             </div>
             <div class="form-group">
                 <label for="nama"><span style="color:red;">*</span> Nama Pembayaran</label>
@@ -53,7 +53,7 @@
             </div>
 
             <div class="card-footer text-right border-0">
-                <a class="btn btn-danger mr-3" href="{{ route('metode_pembayaran_pemilik.index') }}">Batal</a>
+                <a class="btn btn-danger mr-3" href="{{ route('rekening_pembayaran.index') }}">Batal</a>
                 <button type="submit" class="btn btn-primary">Simpan</button>
             </div>
         </form>

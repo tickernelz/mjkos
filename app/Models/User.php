@@ -67,8 +67,13 @@ class User extends Authenticatable
         return $this->hasMany(Transaksi::class);
     }
 
-    public function MetodePembayaranPemilik()
+    public function MetodePembayaran()
     {
-        return $this->hasMany(MetodePembayaranPemilik::class);
+        return $this->hasMany(MetodePembayaran::class);
+    }
+
+    public function RekeningPembayaran()
+    {
+        return $this->hasMany(RekeningPembayaran::class);
     }
 }

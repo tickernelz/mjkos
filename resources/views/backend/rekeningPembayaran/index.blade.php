@@ -1,8 +1,8 @@
 @extends('backend.layouts.app')
-@section('title','Daftar Metode Pembayaran')
+@section('title','Daftar Rekening Pembayaran')
 @section('content')
-    <x-page-index title="Metode Pembayaran" buttonLabel="Tambah Metode Pembayaran"
-                  routeCreate="metode_pembayaran_pemilik.create">
+    <x-page-index title="Rekening Pembayaran" buttonLabel="Tambah Rekening Pembayaran"
+                  routeCreate="rekening_pembayaran.create">
         @if ($metode->IsNotEmpty())
             <table id="dataTable" class="table table-striped table-borderless responsive nowrap" style="width:100%">
                 <thead>
@@ -32,7 +32,7 @@
                         @role('pemilik')
                         <td>
                             <div class="table-actions btn-group">
-                                <a href="{{route('metode_pembayaran_pemilik.edit', $data->id)}}"
+                                <a href="{{route('rekening_pembayaran.edit', $data->id)}}"
                                    class="table-action btn btn-primary mr-2"
                                    data-toggle="tooltip" title="Ubah">
                                     <i class="fas fa-edit"></i>
@@ -49,11 +49,11 @@
                 @endforeach
                 </tbody>
             </table>
-            @include('backend.metodePembayaranPemilik.metodePembayaran-modal')
+            @include('backend.rekeningPembayaran.rekeningPembayaran-modal')
         @else
             <div class="align-items-center bg-light p-3 border-secondary rounded">
                 <span class="">Oops!</span><br>
-                <p><i class="fas fa-info-circle"></i> Belum Terdapat Data Metode Pembayaran</p>
+                <p><i class="fas fa-info-circle"></i> Belum Terdapat Data Rekening Pembayaran</p>
             </div>
         @endif
     </x-page-index>

@@ -10,8 +10,13 @@ class MetodePembayaran extends Model
         'id',
     ];
 
-    public function MetodePembayaranPemilik()
+    public function user()
     {
-        return $this->hasMany(MetodePembayaranPemilik::class);
+        return $this->belongsTo(User::class);
+    }
+
+    public function RekeningPembayaran()
+    {
+        return $this->hasMany(RekeningPembayaran::class);
     }
 }

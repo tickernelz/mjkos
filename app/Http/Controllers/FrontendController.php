@@ -113,7 +113,7 @@ class FrontendController extends Controller
             ->first();
         $kos = Kos::whereId($id)->first();
         $pemilik = $kos->user;
-        $metode_pembayaran = $pemilik->MetodePembayaranPemilik;
+        $metode_pembayaran = $pemilik->RekeningPembayaran;
         $biaya = $request->biaya;
         $tgl_mulai = $request->date;
         $durasi = $request->durasi;

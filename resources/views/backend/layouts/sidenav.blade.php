@@ -16,9 +16,13 @@
                 <a class="nav-link " href="{{route('kos.index')}}">
                     <i class="fas fa-home"></i><span>Kelola Kos</span></a>
             </li>
-            <li class="@if(Request::is('*metode_pembayaran_pemilik*')) active @endif">
-                <a class="nav-link " href="{{route('metode_pembayaran_pemilik.index')}}">
+            <li class="@if(Request::is('*metode_pembayaran*')) active @endif">
+                <a class="nav-link " href="{{route('metode_pembayaran.index')}}">
                     <i class="fas fa-money-bill"></i><span>Metode Pembayaran</span></a>
+            </li>
+            <li class="@if(Request::is('*rekening_pembayaran*')) active @endif">
+                <a class="nav-link " href="{{route('rekening_pembayaran.index')}}">
+                    <i class="fas fa-money-check"></i><span>Rekening Pembayaran</span></a>
             </li>
             @endrole
 

@@ -17,7 +17,7 @@
                     Oke
                 </a>
                 <form id="user-delete-form" method="POST"
-                      action="{{ route('metode_pembayaran_pemilik.destroy', $data->id) }}">
+                      action="{{ route('rekening_pembayaran.destroy', $data->id) }}">
                     @csrf
                     @method('DELETE')
                     <input type="hidden" name="delete_id" id="delete_id">

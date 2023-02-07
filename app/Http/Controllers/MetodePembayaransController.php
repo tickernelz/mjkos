@@ -31,12 +31,22 @@ class MetodePembayaransController extends Controller
         $new_gambar = time() . '_' . Auth::user()->name . "_" . $gambar->getClientOriginalName();
         $destination = 'images/metode_pembayaran/';
         $gambar->move($destination, $new_gambar);
+        $roles = Auth::user()->getRoleNames();
 
-        MetodePembayaran::create([
-            'nama' => $request->nama,
-            'gambar' => $new_gambar,
-            'status' => $request->status,
-        ]);
+        if ($roles->contains('admin')) {
+            MetodePembayaran::create([
+                'nama' => $request->nama,
+                'gambar' => $new_gambar,
+                'status' => $request->status,
+            ]);
+        } else {
+            MetodePembayaran::create([
+                'user_id' => auth()->user()->id,
+                'nama' => $request->nama,
+                'gambar' => $new_gambar,
+                'status' => $request->status,
+            ]);
+        }
 
         return redirect()->route('metode_pembayaran.index')->with('success', 'Metode Pembayaran berhasil ditambahkan');
     }

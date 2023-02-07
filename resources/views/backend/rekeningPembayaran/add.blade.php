@@ -1,8 +1,8 @@
 @extends('backend.layouts.app')
 @section('title','Tambah Kos')
 @section('content')
-    <x-page-form page='create' route="metode_pembayaran_pemilik.index" title="Metode Pembayaran">
-        <form action="{{route('metode_pembayaran_pemilik.store')}}" method="post" enctype="multipart/form-data">
+    <x-page-form page='create' route="rekening_pembayaran.index" title="Rekening Pembayaran">
+        <form action="{{route('rekening_pembayaran.store')}}" method="post" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
                 <label for="nama"><span style="color:red;">*</span> Nama Pembayaran</label>
@@ -12,7 +12,7 @@
                             <option value="{{$item->id}}">{{$item->nama}}</option>
                         @endforeach
                     @else
-                        <option value="">Tidak ada metode pembayaran</option>
+                        <option value="">Tidak ada rekening pembayaran</option>
                     @endif
                 </select>
                 @error('nama')
@@ -44,7 +44,7 @@
             </div>
 
             <div class="card-footer text-right border-0">
-                <a class="btn btn-danger mr-3" href="{{ route('metode_pembayaran_pemilik.index') }}">Batal</a>
+                <a class="btn btn-danger mr-3" href="{{ route('rekening_pembayaran.index') }}">Batal</a>
                 <x-tabel-button type="submit" color="primary" title="Simpan"></x-tabel-button>
             </div>
         </form>

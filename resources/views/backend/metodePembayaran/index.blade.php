@@ -9,10 +9,9 @@
                 <tr>
                     <th>No</th>
                     <th>Nama</th>
+                    <th>Created By</th>
                     <th>Status</th>
-                    @role('admin')
                     <th>Aksi</th>
-                    @endrole
                 </tr>
                 </thead>
                 <tbody>
@@ -20,6 +19,11 @@
                     <tr>
                         <td>{{$key+1}}</td>
                         <td>{{$data->nama}}</td>
+                        <td>@if($data->user == null)
+                                Admin
+                            @else
+                                {{$data->user->name}}
+                            @endif</td>
                         <td>
                             @if ($data->status == 0)
                                 <span class="badge badge-danger">Tidak Aktif</span>
@@ -27,22 +31,22 @@
                                 <span class="badge badge-success">Aktif</span>
                             @endif
                         </td>
-                        @role('admin')
                         <td>
-                            <div class="table-actions btn-group">
-                                <a href="{{route('metode_pembayaran.edit', $data->id)}}"
-                                   class="table-action btn btn-primary mr-2"
-                                   data-toggle="tooltip" title="Ubah">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                <button class="table-action btn btn-danger delete-btn mr-2" data-toggle="tooltip"
-                                        title="Delete"
-                                        value="{{$data->id}}">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
+                            @if($data->user_id == Auth::id() || Auth::user()->hasRole('admin'))
+                                <div class="table-actions btn-group">
+                                    <a href="{{route('metode_pembayaran.edit', $data->id)}}"
+                                       class="table-action btn btn-primary mr-2"
+                                       data-toggle="tooltip" title="Ubah">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <button class="table-action btn btn-danger delete-btn mr-2" data-toggle="tooltip"
+                                            title="Delete"
+                                            value="{{$data->id}}">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            @endif
                         </td>
-                        @endrole
                     </tr>
                 @endforeach
                 </tbody>
