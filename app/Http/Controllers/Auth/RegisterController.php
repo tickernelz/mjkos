@@ -34,6 +34,11 @@ class RegisterController extends Controller
     // protected $redirectTo = RouteServiceProvider::HOME;
     protected function registered(Request $request, $user)
     {
+        if (!Auth::user()->aktif == 1) {
+            Auth::logout();
+            return redirect()->route('login')->with('error', "Registrasi berhasil, tunggu konfirmasi dari admin!");
+        }
+        Auth::logout();
         return redirect()->route('login')->with('info', "Registrasi berhasil");
     }
 
@@ -50,7 +55,7 @@ class RegisterController extends Controller
     /**
      * Get a validator for an incoming registration request.
      *
-     * @param  array  $data
+     * @param array $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data)
@@ -71,13 +76,14 @@ class RegisterController extends Controller
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param  array  $data
-     * @return \App\Models\User
+     * @param array $data
+     * @return \Illuminate\Http\RedirectResponse
      */
     protected function create(array $data)
     {
         $kk = $data['kk'];
         $name = $data['name'];
+        $role = $data['role'];
         $new_kk = 'KK' . "-" . $name . "." . $kk->getClientOriginalExtension();
         $destination = 'images/kk';
         $kk->move($destination, $new_kk);
@@ -87,7 +93,14 @@ class RegisterController extends Controller
         $destination = 'images/ktp';
         $ktp->move($destination, $new_ktp);
 
-        $user =  User::create([
+        if ($role == 3) {
+            $aktif = 1;
+        } else {
+            $aktif = 0;
+        }
+
+        $user = User::create([
+            'role_id' => $role,
             'name' => $data['name'],
             'email' => $data['email'],
             'jk' => $data['jk'],
@@ -95,12 +108,11 @@ class RegisterController extends Controller
             'telp' => $data['telp'],
             'pekerjaan' => $data['pekerjaan'],
             'foto_ktp' => $new_ktp,
-            'foto_ktp' => $new_kk,
-            'aktif' => 0,
-            'role_id' => 3,
+            'foto_kk' => $new_kk,
+            'aktif' => $aktif,
             'password' => Hash::make($data['password']),
         ]);
-        $user->assignRole(2);
+        $user->assignRole($role);
         return $user;
     }
 }

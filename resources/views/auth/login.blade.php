@@ -37,6 +37,11 @@
                                     {{ Session::get('error') }}
                                 </div>
                             @endif
+                            @if (Session::has('info'))
+                                <div class="alert alert-info" role="alert">
+                                    {{ Session::get('info') }}
+                                </div>
+                            @endif
                             <form method="POST" action="{{ route('login') }}">
                                 @csrf
                                 <div class="form-group">
