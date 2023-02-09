@@ -119,7 +119,7 @@
                     </div>
                     <div class="col col-lg-4">
                         <div class="card float-end shadow-lg" style="width: 18rem;">
-                            <form action="{{route('form.pengajuan',$kos->id)}}" method="get">
+                            <form action="{{route('form.pengajuan',$kos->id)}}" method="get" id="form-pengajuan">
                                 @csrf
                                 <div class="card-header" id="tite">
                                     <h6 class="card-title text-center fw-bold">Rp.{{$kos->hargaNumber()}} / Bulan</h6>
@@ -151,7 +151,8 @@
                             </form>
                         </div>
                         <div class="card float-end shadow-lg text-center" style="width: 18rem; margin-top: 5rem">
-                            <a type="button" href="/chat/{{$kos->user->id}}" class="btn btn-secondary" style="width:100%">
+                            <a type="button" href="/chat/{{$kos->user->id}}" class="btn btn-secondary"
+                               style="width:100%">
                                 Hubungi Pemilik
                             </a>
                         </div>
@@ -203,6 +204,30 @@
 
         var today = new Date().toISOString().split('T')[0];
         $('#date')[0].setAttribute('min', today);
+    </script>
+    <script>
+
+        $(document).ready(function () {
+            $('#btn-submit').click(function (e) {
+                e.preventDefault();
+                // Check if user has ktp and kk
+                $.ajax({
+                    url: "{{ route('check.dokumen') }}",
+                    type: "GET",
+                    success: function (response) {
+                        if (response.status === 'success') {
+                            $('#form-pengajuan').submit();
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Anda belum mengupload KTP dan KK',
+                            })
+                        }
+                    }
+                });
+            });
+        });
     </script>
     <script
         src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&libraries=places&callback=initialize"

@@ -54,7 +54,7 @@
                                         <label for="frist_name">Nama</label>
                                         <input required id="frist_name" type="text"
                                                class="form-control @error('nama') is-invalid @enderror" name="name"
-                                               autofocus>
+                                               autofocus value="{{ old('name') }}">
                                         @error('nama')
                                         <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -65,7 +65,7 @@
                                         <label for="email">Email</label>
                                         <input required id="email" type="email"
                                                class="form-control @error('email') is-invalid @enderror" name="email"
-                                               tabindex="1">
+                                               tabindex="1" value="{{ old('email') }}">
                                         @error('email')
                                         <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -78,8 +78,8 @@
                                             class="form-control form-control-user @error('role') is-invalid @enderror"
                                             name="role">
                                             <option selected disabled>Pilih Role</option>
-                                            <option value="2">Pemilik Kost</option>
-                                            <option value="3">Penyewa Kost</option>
+                                            <option value="2" @if (old('role') == 2) selected @endif>Pemilik Kost</option>
+                                            <option value="3" @if (old('role') == 3) selected @endif>Penyewa Kost</option>
                                         </select>
                                         @error('role')
                                         <span class="invalid-feedback" role="alert">
@@ -92,7 +92,7 @@
                                 <div class="row">
                                     <div class="form-group col-6">
                                         <label for="email">No. Telp</label>
-                                        <input required id="email" type="number"
+                                        <input required id="email" type="number" value="{{ old('telp') }}"
                                                class="form-control @error('telp') is-invalid @enderror" name="telp">
                                         @error('telp')
                                         <span class="invalid-feedback" role="alert">
@@ -105,8 +105,8 @@
                                         <select name="jk"
                                                 class="form-control selectric @error('jk') is-invalid @enderror">
                                             <option disabled selected>Pilih Jenis Kelamin</option>
-                                            <option value="L">Laki-laki</option>
-                                            <option value="P">Perempuan</option>
+                                            <option value="L" @if (old('jk') == 'L') selected @endif>Laki-laki</option>
+                                            <option value="P" @if (old('jk') == 'P') selected @endif>Perempuan</option>
                                         </select>
                                         @error('jk')
                                         <span class="invalid-feedback" role="alert">
@@ -122,9 +122,9 @@
                                         <select name="pekerjaan"
                                                 class="form-control selectric @error('pekerjaan') is-invalid @enderror">
                                             <option disabled selected>Pilih Pekerjaan</option>
-                                            <option value="Mahasiswa">Mahasiswa</option>
-                                            <option value="Bekerja">Bekerja</option>
-                                            <option value="Lainnya">Lainnya</option>
+                                            <option value="Mahasiswa" @if (old('pekerjaan') == 'Mahasiswa') selected @endif>Mahasiswa</option>
+                                            <option value="Bekerja" @if (old('pekerjaan') == 'Bekerja') selected @endif>Bekerja</option>
+                                            <option value="Lainnya" @if (old('pekerjaan') == 'Lainnya') selected @endif>Lainnya</option>
                                         </select>
                                         @error('pekerjaan')
                                         <span class="invalid-feedback" role="alert">
@@ -137,9 +137,9 @@
                                         <select name="status"
                                                 class="form-control selectric @error('status') is-invalid @enderror">
                                             <option disabled selected>Pilih Status</option>
-                                            <option value="1">Lajang</option>
-                                            <option value="2">Kawin</option>
-                                            <option value="3">Kawin Belum Memiliki Anak</option>
+                                            <option value="1" @if (old('status') == 1) selected @endif>Lajang</option>
+                                            <option value="2" @if (old('status') == 2) selected @endif>Kawin</option>
+                                            <option value="3" @if (old('status') == 3) selected @endif>Kawin Belum Punya Anak</option>
                                         </select>
                                         @error('status')
                                         <span class="invalid-feedback" role="alert">
@@ -179,7 +179,7 @@
                                 <div class="row">
                                     <div class="form-group col-6">
                                         <label>Foto KTP</label>
-                                        <input required id="password2" type="file"
+                                        <input id="password2" type="file"
                                                class="form-control @error('ktp') is-invalid @enderror" name="ktp">
                                         @error('ktp')
                                         <span class="invalid-feedback" role="alert">
@@ -189,7 +189,7 @@
                                     </div>
                                     <div class="form-group col-6">
                                         <label>Foto KK</label>
-                                        <input required id="file2" type="file"
+                                        <input id="file2" type="file"
                                                class="form-control @error('kk') is-invalid @enderror" name="kk">
                                         @error('kk')
                                         <span class="invalid-feedback" role="alert">

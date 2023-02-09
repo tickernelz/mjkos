@@ -60,7 +60,7 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
-        return Validator::make($data, [
+        $rules = [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required'],
@@ -68,10 +68,16 @@ class RegisterController extends Controller
             'status' => ['required'],
             'telp' => ['required'],
             'pekerjaan' => ['required'],
-            'ktp' => ['required'],
-            'kk' => ['required'],
-        ]);
+        ];
+
+        if ($data['role'] == 2) {
+            $rules['ktp'] = ['required'];
+            $rules['kk'] = ['required'];
+        }
+
+        return Validator::make($data, $rules);
     }
+
 
     /**
      * Create a new user instance after a valid registration.
@@ -81,38 +87,41 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $kk = $data['kk'];
-        $name = $data['name'];
-        $role = $data['role'];
-        $new_kk = 'KK' . "-" . $name . "." . $kk->getClientOriginalExtension();
-        $destination = 'images/kk';
-        $kk->move($destination, $new_kk);
-
-        $ktp = $data['ktp'];
-        $new_ktp = 'KTP' . "-" . $name . "." . $ktp->getClientOriginalExtension();
-        $destination = 'images/ktp';
-        $ktp->move($destination, $new_ktp);
-
-        if ($role == 3) {
-            $aktif = 1;
-        } else {
-            $aktif = 0;
+        $validator = validator($data);
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
         }
 
-        $user = User::create([
-            'role_id' => $role,
+        $attributes = [
+            'role_id' => $data['role'],
             'name' => $data['name'],
             'email' => $data['email'],
             'jk' => $data['jk'],
             'status' => $data['status'],
             'telp' => $data['telp'],
             'pekerjaan' => $data['pekerjaan'],
-            'foto_ktp' => $new_ktp,
-            'foto_kk' => $new_kk,
-            'aktif' => $aktif,
             'password' => Hash::make($data['password']),
-        ]);
-        $user->assignRole($role);
+        ];
+
+        if ($data['role'] != 3) {
+            $kk = $data['kk'];
+            $new_kk = 'KK' . "-" . $data['name'] . "." . $kk->getClientOriginalExtension();
+            $kkDest = 'images/kk';
+            $kk->move($kkDest, $new_kk);
+
+            $ktp = $data['ktp'];
+            $new_ktp = 'KTP' . "-" . $data['name'] . "." . $ktp->getClientOriginalExtension();
+            $ktpDest = 'images/ktp';
+            $ktp->move($ktpDest, $new_ktp);
+
+            $attributes['foto_ktp'] = $new_ktp;
+            $attributes['foto_kk'] = $new_kk;
+            $attributes['aktif'] = 0;
+        } else {
+            $attributes['aktif'] = 1;
+        }
+        $user = User::create($attributes);
+        $user->assignRole($data['role']);
         return $user;
     }
 }

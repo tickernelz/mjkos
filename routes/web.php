@@ -91,7 +91,7 @@ Route::middleware(['auth'])->group(function () {
         Route::prefix('profile')->name('profile.')->middleware('auth')->group(function () {
             Route::get('/', [DashboardController::class, 'profile'])->name('detail');
             Route::post('/update', [DashboardController::class, 'updateProfile'])->name('update');
-            Route::post('/update/ktm', [DashboardController::class, 'updateKTM'])->name('ktm');
+            Route::post('/update/dokumen', [DashboardController::class, 'updateDokumen'])->name('dokumen');
             Route::post('/update/foto', [DashboardController::class, 'updateFoto'])->name('foto');
             Route::post('/change-password', [DashboardController::class, 'changePassword'])->name('change-password');
         });
@@ -105,5 +105,6 @@ Route::middleware(['auth'])->group(function () {
             $transaksi = Transaksi::where('status', 0)->where('user_id', Auth::user()->id)->paginate(10);
             return view('frontend.favorit', compact('transaksi'));
         });
+        Route::get('/check/dokumen', [FrontendController::class, 'checkDokumen'])->name('check.dokumen');
     });
 });

@@ -6,6 +6,7 @@ use App\Models\Fasilitas;
 use App\Models\Kos;
 use App\Models\Peraturan;
 use App\Models\Transaksi;
+use App\Models\User;
 use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -216,5 +217,18 @@ class FrontendController extends Controller
             'kos_id' => $id,
         ]);
         return redirect()->back()->with('success', 'Berhasil ditambah ke dalam favorit.');
+    }
+
+    public function checkDokumen()
+    {
+        $user_id = Auth::user()->id;
+        $user = User::whereId($user_id)->first();
+        // Check foto_ktp and foto_kk not null
+        $kk = $user->foto_kk;
+        $ktp = $user->foto_ktp;
+        if ($kk == null || $ktp == null) {
+            return response()->json(['status' => 'error']);
+        }
+        return response()->json(['status' => 'success']);
     }
 }
