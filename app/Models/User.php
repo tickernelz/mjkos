@@ -52,6 +52,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function isReviewed($kos_id)
+    {
+        return $this->review()->where('kos_id', $kos_id)->exists();
+    }
+
     public function role()
     {
         return $this->belongsTo(Role::class);
@@ -75,5 +80,10 @@ class User extends Authenticatable
     public function RekeningPembayaran()
     {
         return $this->hasMany(RekeningPembayaran::class);
+    }
+
+    public function review()
+    {
+        return $this->hasMany(Review::class);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Fasilitas;
 use App\Models\Kos;
 use App\Models\Peraturan;
+use App\Models\Review;
 use App\Models\Transaksi;
 use App\Models\User;
 use DB;
@@ -27,7 +28,8 @@ class FrontendController extends Controller
 
         $fasilitas = Fasilitas::where('kos_id', $id)->get();
         $peraturan = Peraturan::where('kos_id', $id)->get();
-        return view('frontend.detail-kos', compact('kos', 'fasilitas', 'peraturan', 'transaksi'));
+        $reviews = Review::where('kos_id', $id)->paginate(3);
+        return view('frontend.detail-kos', compact('kos', 'fasilitas', 'peraturan', 'transaksi', 'reviews'));
     }
 
     public function cariKosProses($lat, $lng, $radius = 40)

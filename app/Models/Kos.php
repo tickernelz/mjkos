@@ -19,6 +19,13 @@ class Kos extends Model
         return number_format($this->harga, 0, ',', '.');
     }
 
+    public function meanRating()
+    {
+        $avg = $this->review()->avg('rating');
+        // round to nearest 0.5
+        return round($avg * 2) / 2;
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -39,13 +46,13 @@ class Kos extends Model
         return $this->hasMany(Peraturan::class);
     }
 
-    public function pintu()
-    {
-        return $this->hasMany(Pintu::class);
-    }
-
     public function foto()
     {
         return $this->hasMany(Foto::class);
+    }
+
+    public function review()
+    {
+        return $this->hasMany(Review::class);
     }
 }

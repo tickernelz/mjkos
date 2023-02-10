@@ -44,13 +44,33 @@
         </section>
         <section style="margin-top: -100px">
             <div class="container">
-                <div class="text-start mt-2">
-                    <h4 class="card-title fw-bold">{{ $kos->nama }}</h4>
-                    <p class="text-muted" style="margin-bottom: -1px">Ukuran : {{$kos->ukuran}}</p>
-                    <p class="text-muted mb-2">Jumlah Transaksi : {{$kos->jumlah_transaksi}}</p>
-                    <span style="font-size: 15px">Terakhir {{$kos->updated_at}}</span>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="text-start mt-2">
+                            <h4 class="card-title fw-bold">{{ $kos->nama }}</h4>
+                            <p class="text-muted" style="margin-bottom: -1px">Ukuran : {{$kos->ukuran}}</p>
+                            <p class="text-muted mb-2">Jumlah Transaksi : {{$kos->jumlah_transaksi}}</p>
+                            <span style="font-size: 15px">Terakhir {{$kos->updated_at}}</span>
+                            <input type="text" id="harga" hidden value="{{$kos->harga}}">
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        @php
+                            $rating_kos = $kos->meanRating();
+                            $star_kos = '';
+                            for($i = 0; $i < 5; $i++) {
+                                if($i < floor($rating_kos)) {
+                                    $star_kos .= '<li class="list-inline-item"><i class="material-icons">&#xE838;</i></li>';
+                                } elseif($i == floor($rating_kos) && $rating_kos - floor($rating_kos) >= 0.5) {
+                                    $star_kos .= '<li class="list-inline-item"><i class="material-icons">&#xE839;</i></li>';
+                                } else {
+                                    $star_kos .= '<li class="list-inline-item"></li>';
+                                }
+                            }
+                        @endphp
+                        <ul class="rating list-unstyled list-inline">{!! $star_kos !!}</ul>
+                    </div>
                 </div>
-                <input type="text" id="harga" hidden value="{{$kos->harga}}">
                 <div class="row justify-content-center">
                     <div class="col">
                         <div class="float-end">
@@ -156,6 +176,69 @@
                                 Hubungi Pemilik
                             </a>
                         </div>
+                    </div>
+                </div>
+                <hr>
+                <div id="wrap-review">
+                    <div class="col-lg-12">
+
+                        <h3 class="review-title text-center">Testimonials</h3>
+
+                        @if (count($reviews) > 0)
+                            @foreach($reviews as $review)
+                                <div class="review">
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-3 col-sm-4">
+                                            <div class="review__head text-center">
+                                                <img
+                                                    src="{{ asset(auth()->user()->foto ? 'images/profil/'. auth()->user()->foto : 'backend/assets/img/avatar/avatar-1.png') }}"
+                                                    class="profile-img img-circle center-block">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-9 col-md-9 col-sm-8">
+                                            <div class="review__body">
+                                                <span class="author-name">{{$review->user->name}}</span>
+                                                @php
+                                                    $rating = $review->rating;
+                                                    $star = '';
+                                                    for($i = 0; $i < 5; $i++) {
+                                                        if($i < floor($rating)) {
+                                                            $star .= '<li class="list-inline-item"><i class="material-icons">&#xE838;</i></li>';
+                                                        } elseif($i == floor($rating) && $rating - floor($rating) >= 0.5) {
+                                                            $star .= '<li class="list-inline-item"><i class="material-icons">&#xE839;</i></li>';
+                                                        } else {
+                                                            $star .= '<li class="list-inline-item"></li>';
+                                                        }
+                                                    }
+                                                @endphp
+                                                <ul class="rating list-unstyled list-inline">{!! $star !!}</ul>
+                                                <p class="review__text">{{$review->review}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+
+                            <div class="row">
+                                <div class="d-flex justify-content-center">
+                                    {!! $reviews->links() !!}
+                                </div>
+                            </div>
+                        @else
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="alert alert-info" role="alert">
+                                        <h4 class="alert-heading">Belum ada review</h4>
+                                        <p>Belum ada review untuk kos ini, jadi jadilah yang pertama untuk memberikan
+                                            review
+                                            untuk kos ini.</p>
+                                        <hr>
+                                        <p class="mb-0">Terima kasih.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+
                     </div>
                 </div>
             </div>

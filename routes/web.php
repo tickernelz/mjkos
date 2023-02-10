@@ -7,9 +7,9 @@ use App\Http\Controllers\{DashboardController,
     MetodePembayaransController,
     RekeningPembayaranController,
     PeraturanController,
+    ReviewsController,
     TransaksiController,
-    UserController
-};
+    UserController};
 use App\Models\{Foto, Kos, Pengaturan, Transaksi};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\{Auth, Route};
@@ -106,5 +106,6 @@ Route::middleware(['auth'])->group(function () {
             return view('frontend.favorit', compact('transaksi'));
         });
         Route::get('/check/dokumen', [FrontendController::class, 'checkDokumen'])->name('check.dokumen');
+        Route::post('/review/store', [ReviewsController::class, 'store'])->name('review.store');
     });
 });
