@@ -51,7 +51,7 @@
                                 @csrf
                                 <div class="row">
                                     <div class="form-group col-4">
-                                        <label for="frist_name">Nama</label>
+                                        <label for="frist_name"><span style="color: red">*</span>Nama</label>
                                         <input required id="frist_name" type="text"
                                                class="form-control @error('nama') is-invalid @enderror" name="name"
                                                autofocus value="{{ old('name') }}">
@@ -62,7 +62,7 @@
                                         @enderror
                                     </div>
                                     <div class="form-group col-4">
-                                        <label for="email">Email</label>
+                                        <label for="email"><span style="color: red">*</span>Email</label>
                                         <input required id="email" type="email"
                                                class="form-control @error('email') is-invalid @enderror" name="email"
                                                tabindex="1" value="{{ old('email') }}">
@@ -73,13 +73,15 @@
                                         @enderror
                                     </div>
                                     <div class="form-group col-4">
-                                        <label for="role">Role</label>
+                                        <label for="role"><span style="color: red">*</span>Role</label>
                                         <select
                                             class="form-control selectric @error('role') is-invalid @enderror"
-                                            name="role" required>
+                                            name="role" required id="role">
                                             <option selected disabled value="" hidden>Pilih Role</option>
-                                            <option value="2" @if (old('role') == 2) selected @endif>Pemilik Kost</option>
-                                            <option value="3" @if (old('role') == 3) selected @endif>Penyewa Kost</option>
+                                            <option value="2" @if (old('role') == 2) selected @endif>Pemilik Kost
+                                            </option>
+                                            <option value="3" @if (old('role') == 3) selected @endif>Penyewa Kost
+                                            </option>
                                         </select>
                                         @error('role')
                                         <span class="invalid-feedback" role="alert">
@@ -91,7 +93,7 @@
 
                                 <div class="row">
                                     <div class="form-group col-6">
-                                        <label for="email">No. Telp</label>
+                                        <label for="email"><span style="color: red">*</span>No. Telp</label>
                                         <input required id="email" type="number" value="{{ old('telp') }}"
                                                class="form-control @error('telp') is-invalid @enderror" name="telp">
                                         @error('telp')
@@ -101,7 +103,7 @@
                                         @enderror
                                     </div>
                                     <div class="form-group col-6">
-                                        <label>Jenis Kelamin</label>
+                                        <label><span style="color: red">*</span>Jenis Kelamin</label>
                                         <select name="jk" required
                                                 class="form-control selectric @error('jk') is-invalid @enderror">
                                             <option disabled selected value="" hidden>Pilih Jenis Kelamin</option>
@@ -118,13 +120,19 @@
 
                                 <div class="row">
                                     <div class="form-group col-6">
-                                        <label>Pekerjaan</label>
+                                        <label><span style="color: red">*</span>Pekerjaan</label>
                                         <select name="pekerjaan" required
                                                 class="form-control selectric @error('pekerjaan') is-invalid @enderror">
                                             <option disabled selected value="" hidden>Pilih Pekerjaan</option>
-                                            <option value="Mahasiswa" @if (old('pekerjaan') == 'Mahasiswa') selected @endif>Mahasiswa</option>
-                                            <option value="Bekerja" @if (old('pekerjaan') == 'Bekerja') selected @endif>Bekerja</option>
-                                            <option value="Lainnya" @if (old('pekerjaan') == 'Lainnya') selected @endif>Lainnya</option>
+                                            <option value="Mahasiswa"
+                                                    @if (old('pekerjaan') == 'Mahasiswa') selected @endif>Mahasiswa
+                                            </option>
+                                            <option value="Bekerja" @if (old('pekerjaan') == 'Bekerja') selected @endif>
+                                                Bekerja
+                                            </option>
+                                            <option value="Lainnya" @if (old('pekerjaan') == 'Lainnya') selected @endif>
+                                                Lainnya
+                                            </option>
                                         </select>
                                         @error('pekerjaan')
                                         <span class="invalid-feedback" role="alert">
@@ -133,13 +141,15 @@
                                         @enderror
                                     </div>
                                     <div class="form-group col-6">
-                                        <label>Status</label>
+                                        <label><span style="color: red">*</span>Status</label>
                                         <select name="status" required
                                                 class="form-control selectric @error('status') is-invalid @enderror">
                                             <option disabled selected value="" hidden>Pilih Status</option>
                                             <option value="1" @if (old('status') == 1) selected @endif>Lajang</option>
                                             <option value="2" @if (old('status') == 2) selected @endif>Kawin</option>
-                                            <option value="3" @if (old('status') == 3) selected @endif>Kawin Belum Punya Anak</option>
+                                            <option value="3" @if (old('status') == 3) selected @endif>Kawin Belum Punya
+                                                Anak
+                                            </option>
                                         </select>
                                         @error('status')
                                         <span class="invalid-feedback" role="alert">
@@ -151,7 +161,7 @@
 
                                 <div class="row">
                                     <div class="form-group col-6">
-                                        <label for="password" class="d-block">Password</label>
+                                        <label for="password" class="d-block"><span style="color: red">*</span>Password</label>
                                         <input required id="password" type="password"
                                                class="form-control pwstrength @error('password') is-invalid @enderror"
                                                data-indicator="pwindicator" name="password">
@@ -163,7 +173,8 @@
                                     </div>
                                     <div class="form-group col-6">
                                         <label for="password2"
-                                               class="d-block @error('password-confirm') is-invalid @enderror">Password
+                                               class="d-block @error('password-confirm') is-invalid @enderror"><span
+                                                style="color: red">*</span>Password
                                             Confirmation</label>
                                         <input id="password-confirm" type="password" class="form-control"
                                                name="password_confirmation" required autocomplete="new-password">
@@ -178,8 +189,8 @@
 
                                 <div class="row">
                                     <div class="form-group col-6">
-                                        <label>Foto KTP</label>
-                                        <input id="password2" type="file"
+                                        <label id="labelKTP">Foto KTP</label>
+                                        <input id="ktp" type="file"
                                                class="form-control @error('ktp') is-invalid @enderror" name="ktp">
                                         @error('ktp')
                                         <span class="invalid-feedback" role="alert">
@@ -188,8 +199,8 @@
                                         @enderror
                                     </div>
                                     <div class="form-group col-6">
-                                        <label>Foto KK</label>
-                                        <input id="file2" type="file"
+                                        <label id="labelKK">Foto KK</label>
+                                        <input id="kk" type="file"
                                                class="form-control @error('kk') is-invalid @enderror" name="kk">
                                         @error('kk')
                                         <span class="invalid-feedback" role="alert">
@@ -215,17 +226,27 @@
 </div>
 
 <!-- General JS Scripts -->
-<script src="{{ asset('assets/vendors/jquery/dist/jquery.min.js') }}"></script>
-<script src="{{ asset('assets/vendors/bootstrap/dist/js/bootstrap.min.js') }}"></script>
-<script src="{{ asset('assets/js/stisla.js') }}"></script>
-
-<!-- JS Libraies -->
-
-<!-- Template JS File -->
-<script src="{{ asset('assets/js/scripts.js') }}"></script>
-<script src="{{ asset('assets/js/custom.js') }}"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
 <!-- Page Specific JS File -->
+<script>
+    $(document).ready(function () {
+        const required = '<span style="color: red">*</span>';
+        $('#role').change(function () {
+            if ($(this).val() === '2') {
+                $('#labelKTP').html(required + 'Foto KTP');
+                $('#labelKK').html(required + 'Foto KK');
+                $('#ktp').attr('required', true);
+                $('#kk').attr('required', true);
+            } else {
+                $('#labelKTP').html('Foto KTP');
+                $('#labelKK').html('Foto KK');
+                $('#ktp').attr('required', false);
+                $('#kk').attr('required', false);
+            }
+        });
+    });
+</script>
 </body>
 
 </html>
