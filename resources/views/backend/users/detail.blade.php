@@ -34,14 +34,14 @@
                         </tr>
                         <tr>
                             <th scope="row">Jenis Kelamin</th>
-                            <td class="">{{auth()->user()->jk == 'L' ? 'Laki-Laki' : 'Perempuan'}}</td>
+                            <td class="">{{$user->jk == 'L' ? 'Laki-Laki' : 'Perempuan'}}</td>
                         </tr>
                         <tr>
-                            <th scope="row">Email</th>
+                            <th scope="row">Pekerjaan</th>
                             <td class="">
-                                @if (auth()->user()->pekerjaan == 'Mahasiswa')
+                                @if ($user->pekerjaan == 'Mahasiswa')
                                 Mahasiswa
-                                @elseif(auth()->user()->pekerjaan == 'Bekerja')
+                                @elseif($user->pekerjaan == 'Bekerja')
                                 Bekerja
                                 @else
                                 Lainnya
@@ -49,13 +49,13 @@
                             </td>
                         </tr>
                         <tr>
-                            <th scope="row">Email</th>
+                            <th scope="row">Status</th>
                             <td class="">
-                                @if (auth()->user()->status == '1')
+                                @if ($user->status == '1')
                                 Belum Kawin
-                                @elseif(auth()->user()->status == '2')
+                                @elseif($user->status == '2')
                                 Kawin
-                                @elseif(auth()->user()->status == '3')
+                                @elseif($user->status == '3')
                                 Kawin Memiliki Anak
                                 @endif
                             </td>
