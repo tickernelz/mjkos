@@ -74,11 +74,11 @@ class FrontendController extends Controller
             $alamat = $request->alamat;
         }
         if (Auth::check()) {
-            $cek = Transaksi::where('user_id', Auth::user()->id)
+            /*$cek = Transaksi::where('user_id', Auth::user()->id)
                 ->where('status', '>', 0)
-                ->pluck('kos_id');
+                ->pluck('kos_id');*/
             $kos = $kos
-                ->whereNotIn('id', $cek)
+                /*->whereNotIn('id', $cek)*/
                 ->where('tampil', 1)
                 ->where('harga', '>=', $fil_harga_min)
                 ->where('harga', '<=', $fil_harga_max);
