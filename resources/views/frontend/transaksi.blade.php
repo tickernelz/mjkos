@@ -96,17 +96,19 @@
                                                         <p class="fw-bold">{{$item->durasi}} Bulan</p>
                                                     </div>
                                                 </div>
-                                                <div class="my-3">
-                                                    <span class="fw-bold">Review</span>&nbsp;
-                                                    @if(auth()->user()->isReviewed($item->kos->id))
-                                                        <span class="badge bg-success">Sudah</span>
-                                                    @else
-                                                        <button type="button" class="btn btn-sm btn-primary"
-                                                                id="btnReview" value="{{$item->kos->id}}">
-                                                            Tulis Review
-                                                        </button>
-                                                    @endif
-                                                </div>
+                                                @if($item->status == 4 || $item->status == 8)
+                                                    <div class="my-3">
+                                                        <span class="fw-bold">Review</span>&nbsp;
+                                                        @if(auth()->user()->isReviewed($item->kos->id))
+                                                            <span class="badge bg-success">Sudah</span>
+                                                        @else
+                                                            <button type="button" class="btn btn-sm btn-primary"
+                                                                    id="btnReview" value="{{$item->kos->id}}">
+                                                                Tulis Review
+                                                            </button>
+                                                        @endif
+                                                    </div>
+                                                @endif
                                                 @if ($item->status == 6 || $item->status == 2 || $item->status == -2)
                                                     <div class="row">
                                                         <div class="col">

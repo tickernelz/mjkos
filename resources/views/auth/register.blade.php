@@ -75,9 +75,9 @@
                                     <div class="form-group col-4">
                                         <label for="role">Role</label>
                                         <select
-                                            class="form-control form-control-user @error('role') is-invalid @enderror"
-                                            name="role">
-                                            <option selected disabled>Pilih Role</option>
+                                            class="form-control selectric @error('role') is-invalid @enderror"
+                                            name="role" required>
+                                            <option selected disabled value="" hidden>Pilih Role</option>
                                             <option value="2" @if (old('role') == 2) selected @endif>Pemilik Kost</option>
                                             <option value="3" @if (old('role') == 3) selected @endif>Penyewa Kost</option>
                                         </select>
@@ -102,9 +102,9 @@
                                     </div>
                                     <div class="form-group col-6">
                                         <label>Jenis Kelamin</label>
-                                        <select name="jk"
+                                        <select name="jk" required
                                                 class="form-control selectric @error('jk') is-invalid @enderror">
-                                            <option disabled selected>Pilih Jenis Kelamin</option>
+                                            <option disabled selected value="" hidden>Pilih Jenis Kelamin</option>
                                             <option value="L" @if (old('jk') == 'L') selected @endif>Laki-laki</option>
                                             <option value="P" @if (old('jk') == 'P') selected @endif>Perempuan</option>
                                         </select>
@@ -119,9 +119,9 @@
                                 <div class="row">
                                     <div class="form-group col-6">
                                         <label>Pekerjaan</label>
-                                        <select name="pekerjaan"
+                                        <select name="pekerjaan" required
                                                 class="form-control selectric @error('pekerjaan') is-invalid @enderror">
-                                            <option disabled selected>Pilih Pekerjaan</option>
+                                            <option disabled selected value="" hidden>Pilih Pekerjaan</option>
                                             <option value="Mahasiswa" @if (old('pekerjaan') == 'Mahasiswa') selected @endif>Mahasiswa</option>
                                             <option value="Bekerja" @if (old('pekerjaan') == 'Bekerja') selected @endif>Bekerja</option>
                                             <option value="Lainnya" @if (old('pekerjaan') == 'Lainnya') selected @endif>Lainnya</option>
@@ -134,9 +134,9 @@
                                     </div>
                                     <div class="form-group col-6">
                                         <label>Status</label>
-                                        <select name="status"
+                                        <select name="status" required
                                                 class="form-control selectric @error('status') is-invalid @enderror">
-                                            <option disabled selected>Pilih Status</option>
+                                            <option disabled selected value="" hidden>Pilih Status</option>
                                             <option value="1" @if (old('status') == 1) selected @endif>Lajang</option>
                                             <option value="2" @if (old('status') == 2) selected @endif>Kawin</option>
                                             <option value="3" @if (old('status') == 3) selected @endif>Kawin Belum Punya Anak</option>
