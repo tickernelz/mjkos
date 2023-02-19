@@ -1,7 +1,7 @@
 @extends('backend.layouts.app')
 @section('title','Daftar Kos')
 @section('content')
-    <x-page-index title="Kos" buttonLabel="Tambah Kos" routeCreate="kos.create">
+    <x-page-index title="Kos" buttonLabel="Tambah Kos" routeCreate="kos.create" create="1">
         @if ($kos->IsNotEmpty())
             <table id="dataTable" class="table table-striped table-borderless responsive nowrap" style="width:100%">
                 <thead>
@@ -10,6 +10,7 @@
                     <th>Nama Kos</th>
                     <th>Tampilkan</th>
                     <th>Status</th>
+                    <th>Verifikasi</th>
                     @role('pemilik')
                     <th>Aksi</th>
                     @endrole
@@ -34,6 +35,15 @@
                                 <span class="badge badge-danger">Penuh</span>
                             @endif
                         </td>
+                        <td>
+                            @if ($data->verifikasi == 'proses')
+                                <span class="badge badge-warning">Proses</span>
+                            @elseif($data->verifikasi == 'sudah')
+                                <span class="badge badge-success">Sudah</span>
+                            @elseif($data->verifikasi == 'ditolak')
+                                <span class="badge badge-danger">Ditolak</span>
+                            @endif
+                        </td>
                         @role('pemilik')
                         <td>
                             <div class="table-actions btn-group">
@@ -49,11 +59,17 @@
                                    data-toggle="tooltip" title="Ubah">
                                     <i class="fas fa-edit"></i>
                                 </a>
-                                <button class="table-action btn btn-danger delete-btn mr-2" data-toggle="tooltip"
-                                        title="Delete"
+                                <button class="table-action btn btn-danger delete-btn mr-2" data-toggle="modal"
+                                        title="Delete" data-target="#deleteModal"
                                         value="{{$data->id}}">
                                     <i class="fas fa-trash"></i>
                                 </button>
+                                @if($data->verifikasi == 'ditolak')
+                                    <button class="table-action btn btn-success mr-2" id="alasan-btn"
+                                            value="{{$data->id}}">
+                                        Cek Alasan
+                                    </button>
+                                @endif
                             </div>
                         </td>
                         @endrole
@@ -70,3 +86,26 @@
         @endif
     </x-page-index>
 @endsection
+@push('scripts')
+    <script>
+        $(document).ready(function () {
+            const alasanBtn = $('#alasan-btn');
+            alasanBtn.on('click', function () {
+                const id = $(this).val();
+                $.ajax({
+                    url: "{{route('kos.alasan')}}",
+                    type: "GET",
+                    data: {id: id},
+                    success: function (data) {
+                        Swal.fire({
+                            title: 'Alasan Ditolak',
+                            text: data,
+                            icon: 'info',
+                            confirmButtonText: 'Oke'
+                        })
+                    }
+                })
+            })
+        });
+    </script>
+@endpush

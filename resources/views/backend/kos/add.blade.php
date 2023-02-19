@@ -115,7 +115,7 @@
 
             <div class="form-imgaes mb-3">
                 <span style="color:red;">*</span>Cover Foto</label>
-                <input type="file" id="input-file-now-custom-3" required class="form-control m-2" name="cover">
+                <input type="file" id="input-file-now-custom-3" required class="form-control m-2" name="cover" accept="image/*">
                 @error('cover')
                 <span class="text-danger">{{$message}}</span>
                 @enderror
@@ -124,16 +124,25 @@
             <div class="form-imgaes mb-3">
                 <span style="color:red;">*</span>Multiple Foto</label>
                 <div class="input-group mb-3">
-                    <input type="file" id="input-file-now-custom-3" class="form-control m-2" name="multiple[]" required>
+                    <input type="file" id="input-file-now-custom-3" class="form-control m-2" name="multiple[]" required accept="image/*">
                 </div>
                 <div class="input-group mb-3">
-                    <input type="file" id="input-file-now-custom-3" class="form-control m-2" name="multiple[]" required>
+                    <input type="file" id="input-file-now-custom-3" class="form-control m-2" name="multiple[]" required accept="image/*">
                     <button class="btn btn-success" type="button">Tambah Lain</button>
                 </div>
                 @error('multiple')
                 <span class="text-danger">{{$message}}</span>
                 @enderror
                 <div class="clone"></div>
+            </div>
+
+            <div class="form-imgaes mb-3">
+                <span style="color:red;">*</span>Surat Ijin (PDF)</label>
+                <input type="file" id="input-file-now-custom-3" required class="form-control m-2" name="surat_kos"
+                       accept="application/pdf">
+                @error('surat_kos')
+                <span class="text-danger">{{$message}}</span>
+                @enderror
             </div>
 
             <div class="card-footer text-right border-0">

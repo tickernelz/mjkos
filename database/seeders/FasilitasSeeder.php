@@ -38,5 +38,55 @@ class FasilitasSeeder extends Seeder
             'kos_id' => 1,
             'nama' => 'TV'
         ]);
+
+        Fasilitas::create([
+            'kos_id' => 2,
+            'nama' => 'AC'
+        ]);
+        Fasilitas::create([
+            'kos_id' => 2,
+            'nama' => 'Kamar Mandi dalam'
+        ]);
+        Fasilitas::create([
+            'kos_id' => 2,
+            'nama' => 'Kasur'
+        ]);
+        Fasilitas::create([
+            'kos_id' => 2,
+            'nama' => 'Meja Belajar'
+        ]);
+        Fasilitas::create([
+            'kos_id' => 2,
+            'nama' => 'Parkir Luas'
+        ]);
+        Fasilitas::create([
+            'kos_id' => 2,
+            'nama' => 'TV'
+        ]);
+
+        Fasilitas::create([
+            'kos_id' => 3,
+            'nama' => 'AC'
+        ]);
+        Fasilitas::create([
+            'kos_id' => 3,
+            'nama' => 'Kamar Mandi dalam'
+        ]);
+        Fasilitas::create([
+            'kos_id' => 3,
+            'nama' => 'Kasur'
+        ]);
+        Fasilitas::create([
+            'kos_id' => 3,
+            'nama' => 'Meja Belajar'
+        ]);
+        Fasilitas::create([
+            'kos_id' => 3,
+            'nama' => 'Parkir Luas'
+        ]);
+        Fasilitas::create([
+            'kos_id' => 3,
+            'nama' => 'TV'
+        ]);
     }
 }

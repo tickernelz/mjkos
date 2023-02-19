@@ -141,9 +141,24 @@
                 <div class="clone"></div>
             </div>
 
+            @if($kos->verifikasi == 'ditolak')
+                <div class="form-imgaes mb-3">
+                    <span style="color:red;">*</span>Surat Ijin (PDF)</label>
+                    <input type="file" id="input-file-now-custom-3" class="form-control m-2" name="surat_kos"
+                           accept="application/pdf" required>
+                    @error('surat_kos')
+                    <span class="text-danger">{{$message}}</span>
+                    @enderror
+                </div>
+            @endif
+
             <div class="card-footer text-right border-0">
                 <a class="btn btn-danger mr-3" href="{{ route('kos.index') }}">Batal</a>
-                <button type="submit" class="btn btn-primary">Simpan</button>
+                @if($kos->verifikasi == 'ditolak')
+                    <button type="submit" class="btn btn-primary" value="ulang" name="submit_btn">Ajukan Ulang</button>
+                @else
+                    <button type="submit" class="btn btn-primary" value="simpan" name="submit_btn">Simpan</button>
+                @endif
             </div>
         </form>
 

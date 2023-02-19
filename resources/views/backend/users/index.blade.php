@@ -1,7 +1,7 @@
 @extends('backend.layouts.app')
 @section('title','Daftar Pengguna')
 @section('content')
-<x-page-index title="Pengguna" buttonLabel="Tambah Pengguna" routeCreate="pengguna.create">
+<x-page-index title="Pengguna" buttonLabel="Tambah Pengguna" routeCreate="pengguna.create" create="1">
     @if ($user->IsNotEmpty())
     <table id="dataTable" class="table table-striped table-borderless responsive nowrap" style="width:100%">
         <thead>

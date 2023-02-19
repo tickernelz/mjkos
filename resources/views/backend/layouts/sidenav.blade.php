@@ -40,6 +40,10 @@
                 <a class="nav-link " href="{{route('metode_pembayaran.index')}}">
                     <i class="fas fa-money-bill"></i><span>Metode Pembayaran</span></a>
             </li>
+            <li class="@if(Request::is('*persetujuan_kos*')) active @endif">
+                <a class="nav-link " href="{{route('persetujuan_kos.index')}}">
+                    <i class="fas fa-check"></i><span>Persetujuan Kos</span></a>
+            </li>
             @endrole
             <li class="dropdown @if(Request::is('*transaksi*') || Request::is('*daftar*')) active @endif">
                 <a href="#" class="nav-link has-dropdown"><i class="fas fa-fire"></i><span>Data Sewa Kos</span></a>

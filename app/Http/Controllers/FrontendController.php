@@ -73,21 +73,12 @@ class FrontendController extends Controller
         if ($request->alamat != null) {
             $alamat = $request->alamat;
         }
-        if (Auth::check()) {
-            /*$cek = Transaksi::where('user_id', Auth::user()->id)
-                ->where('status', '>', 0)
-                ->pluck('kos_id');*/
-            $kos = $kos
-                /*->whereNotIn('id', $cek)*/
-                ->where('tampil', 1)
-                ->where('harga', '>=', $fil_harga_min)
-                ->where('harga', '<=', $fil_harga_max);
-        } else {
-            $kos = $kos
-                ->where('tampil', 1)
-                ->where('harga', '>=', $fil_harga_min)
-                ->where('harga', '<=', $fil_harga_max);
-        }
+
+        $kos = $kos
+            ->where('tampil', 1)
+            ->where('verifikasi', 'sudah')
+            ->where('harga', '>=', $fil_harga_min)
+            ->where('harga', '<=', $fil_harga_max);
 
         // Filter
         if ($paling_populer == "on") {
@@ -125,11 +116,6 @@ class FrontendController extends Controller
 
     public function updatePengajuan($id, Request $request)
     {
-        $transaksi = Transaksi::where('user_id', Auth::user()->id)->whereBetween('status', [1, 4])->get();
-        if ($transaksi->IsNotEmpty()) {
-            return redirect()->back()->with('error', 'Anda tidak boleh meminjam lebih dari 1 kos.');
-        }
-
         $durasi = "+" . $request->durasi . "" . "month";
         $tgl_end = date('Y-m-d', strtotime($durasi, strtotime($request->mulai)));
         $kode = "ATJ" . "-" . date('dmY') . substr(str_shuffle("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 5);

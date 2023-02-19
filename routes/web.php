@@ -5,11 +5,13 @@ use App\Http\Controllers\{DashboardController,
     FrontendController,
     KosController,
     MetodePembayaransController,
+    PersetujuanKosController,
     RekeningPembayaranController,
     PeraturanController,
     ReviewsController,
     TransaksiController,
-    UserController};
+    UserController
+};
 use App\Models\{Foto, Kos, Pengaturan, Transaksi};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\{Auth, Route};
@@ -43,6 +45,9 @@ Route::middleware(['auth'])->group(function () {
     Route::group(['middleware' => ['role:pemilik|admin']], function () {
         Route::get('/dashboard', [DashboardController::class, 'indexAdmin'])->name('dashboard');
 
+        // Kos Alasan Penolakan
+        Route::get('/kos/alasan/penolakan', [KosController::class, 'getKosAlasan'])->name('kos.alasan');
+
         // Pengguna
         Route::resource('pengguna', UserController::class);
         Route::get('/aktif/pengguna/{user_id}/{aktif}', [UserController::class, 'updateaktif'])->name('pengguna.aktif');
@@ -56,6 +61,13 @@ Route::middleware(['auth'])->group(function () {
 
         // Metode Pembayaran Pemilik
         Route::resource('rekening_pembayaran', RekeningPembayaranController::class);
+
+        // Persetujuan Kos
+        Route::group(['middleware' => ['role:admin']], function () {
+            Route::get('/persetujuan_kos', [PersetujuanKosController::class, 'index'])->name('persetujuan_kos.index');
+            Route::get('/persetujuan_kos/{id}', [PersetujuanKosController::class, 'show'])->name('persetujuan_kos.show');
+            Route::put('/persetujuan_kos/{id}', [PersetujuanKosController::class, 'update'])->name('persetujuan_kos.update');
+        });
 
         // Fasilitas
         Route::get('/kos/{kos_id}/fasilitas', [FasilitasController::class, 'index'])->name('fasilitas.index');

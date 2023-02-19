@@ -2,7 +2,7 @@
 @section('title','Daftar Fasilitas')
 @section('content')
     <x-page-index title="Fasilitas {{$kos->nama}}" buttonLabel="Tambah Fasilitas" routeCreate="fasilitas.create"
-                  kos-id="{{$kos->id}}">
+                  kos-id="{{$kos->id}}" create="1">
         @if ($fasilitas->isNotEmpty())
             <table id="dataTable" class="table table-striped table-borderless responsive nowrap" style="width:100%">
                 <thead>

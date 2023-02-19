@@ -12,7 +12,7 @@
         <div class="card">
             <div class="card-header">
                 <h4>{{ 'Daftar '.$title }}</h4>
-                @if ($create == null)
+                @if ($create && $routeCreate && $buttonLabel)
                     <div class="card-header-action">
                         <div>
                             @hasanyrole('admin|pemilik')
@@ -36,35 +36,35 @@
 </section>
 
 @push('scripts')
-<script>
-    $(document).ready(function () {
-        $(".create-button").click(function () {
-            $('#loading').show();
-        });
+    <script>
+        $(document).ready(function () {
+            $(".create-button").click(function () {
+                $('#loading').show();
+            });
 
-        $('#dataTable').DataTable({
-            responsive: true
-        });
+            $('#dataTable').DataTable({
+                responsive: true
+            });
 
-        $(document).on('click', '.delete-btn', function () {
-            var sid = $(this).val();
-            $('#deleteModal').modal('show')
-            $('#delete_id').val(sid)
-            // alert(sid)
-        });
+            $(document).on('click', '.delete-btn', function () {
+                var sid = $(this).val();
+                $('#deleteModal').modal('show')
+                $('#delete_id').val(sid)
+                // alert(sid)
+            });
 
-        $(document).on('click', '.reset-btn', function () {
-            var rid = $(this).val();
-            $('#resetModal').modal('show')
-            $('#reset_id').val(rid)
-            // alert(sid)
-        });
+            $(document).on('click', '.reset-btn', function () {
+                var rid = $(this).val();
+                $('#resetModal').modal('show')
+                $('#reset_id').val(rid)
+                // alert(sid)
+            });
 
-        $(document).on('click', '.bukti-btn', function () {
-            var kid = $(this).val();
-            var bid = $('#biaya').val();
-            $('#buktiModal').modal('show')
-            $('.img').html(`<img src="{{asset('images/bukti/${kid}')}}" width="500" class="img-fluid">`)
+            $(document).on('click', '.bukti-btn', function () {
+                var kid = $(this).val();
+                var bid = $('#biaya').val();
+                $('#buktiModal').modal('show')
+                $('.img').html(`<img src="{{asset('images/bukti/${kid}')}}" width="500" class="img-fluid">`)
             $('.modal-header').html(`<h5 class="modal-title text-light" id="deleteModalExample">Total Biaya: Rp.${bid}</h5>`)
         });
     });

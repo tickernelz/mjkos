@@ -28,6 +28,9 @@ class CreateKosTable extends Migration
             $table->text('deskripsi');
             $table->tinyInteger('tampil')->default(0);
             $table->integer('jumlah_transaksi')->default(0);
+            $table->string('surat_kos')->nullable();
+            $table->enum('verifikasi', ['proses', 'sudah', 'ditolak'])->default('proses');
+            $table->string('alasan_tolak')->nullable();
             $table->timestamps();
         });
     }

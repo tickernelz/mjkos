@@ -13,13 +13,15 @@ class PageIndex extends Component
      *
      * @return void
      */
-    public function __construct($title, $buttonLabel, $routeCreate, $kosId = null, $create = null)
+    public function __construct($title, $buttonLabel = null, $routeCreate = null, $kosId = null, $create = null)
     {
         $this->title = $title;
         $this->create = $create;
-        $this->routeCreate = $routeCreate;
-        $this->buttonLabel = $buttonLabel;
         $this->kosId = $kosId;
+        if ($create && $routeCreate && $buttonLabel) {
+            $this->routeCreate = $routeCreate;
+            $this->buttonLabel = $buttonLabel;
+        }
     }
 
     /**

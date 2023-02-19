@@ -40,19 +40,21 @@ class KosController extends Controller
             'status' => 'required',
             'cover' => 'required',
             'multiple' => 'required',
+            'surat_kos' => 'required',
         ]);
-
+        $nama = $request->nama;
         $ukuran = $request->luas . " X " . $request->lebar . ' ' . "meter";
-
         $cover = $request->cover;
-        $new_cover = time() . '_' . Auth::user()->name . "." . $cover->getClientOriginalExtension();
-        $destination = 'images/kos/';
-        $cover->move($destination, $new_cover);
+        $new_cover = time() . '_' . Auth::user()->name . "-" . $nama . "." . $cover->getClientOriginalExtension();
+        $dest_cover = 'images/kos/';
         $conv_harga = str_replace(',', '', $request->harga);
+        $surat_kos = $request->surat_kos;
+        $new_surat_kos = time() . '_' . Auth::user()->name . "-" . $nama . "." . $surat_kos->getClientOriginalExtension();
+        $dest_surat_kos = 'surat_kos/';
 
         $kos = Kos::create([
             'user_id' => auth()->user()->id,
-            'nama' => $request->nama,
+            'nama' => $nama,
             'alamat' => $request->address_address,
             'address_latitude' => $request->address_latitude,
             'address_longitude' => $request->address_longitude,
@@ -62,16 +64,22 @@ class KosController extends Controller
             'tampil' => $request->tampil,
             'status' => $request->status,
             'harga' => $conv_harga,
+            'surat_kos' => $new_surat_kos,
+            'verifikasi' => 'proses',
         ]);
 
-        foreach ($request->multiple as $key => $value) {
-            $multiple_foto = $key . '_' . time() . '_' . Auth::user()->name . "." . $value->getClientOriginalExtension();
-            $destination = 'images/kos/multiple';
-            $value->move($destination, $multiple_foto);
-            Foto::create([
-                'kos_id' => $kos->id,
-                'nama' => $multiple_foto,
-            ]);
+        if ($kos) {
+            $cover->move($dest_cover, $new_cover);
+            $surat_kos->move($dest_surat_kos, $new_surat_kos);
+            foreach ($request->multiple as $key => $value) {
+                $multiple_foto = $key . '_' . time() . '_' . Auth::user()->name . "-" . $nama . "." . $value->getClientOriginalExtension();
+                $dest_multiple_foto = 'images/kos/multiple';
+                $value->move($dest_multiple_foto, $multiple_foto);
+                Foto::create([
+                    'kos_id' => $kos->id,
+                    'nama' => $multiple_foto,
+                ]);
+            }
         }
 
         return redirect()->route('kos.index')->with('success', 'Kos Berhasil ditambah!.');
@@ -85,9 +93,10 @@ class KosController extends Controller
 
     public function update($id, Request $request)
     {
-        $request->validate([
+        $validatedData = $request->validate([
             'nama' => 'required',
-            'address_address' => 'required',
+            'address_latitude' => 'required',
+            'address_longitude' => 'required',
             'deskripsi' => 'required',
             'ukuran' => 'required',
             'tampil' => 'required',
@@ -95,13 +104,39 @@ class KosController extends Controller
             'harga' => 'required',
         ]);
 
-        $conv_harga = str_replace(',', '', $request->harga);
+        $kosData = array_merge($validatedData, [
+            'alamat' => $request->address_address,
+            'address_latitude' => $request->address_latitude,
+            'address_longitude' => $request->address_longitude,
+            'ukuran' => $request->ukuran,
+            'tampil' => $request->tampil,
+            'status' => $request->status,
+            'harga' => str_replace(',', '', $request->harga),
+        ]);
 
-        if ($request->multiple) {
+        $kos = Kos::findOrFail($id);
+        $is_ulang = $request->submit_btn == 'ulang';
+
+        if ($request->has('cover')) {
+            if ($kos->cover && file_exists(public_path() . '/images/kos' . $kos->cover)) {
+                unlink(public_path() . '/images/kos' . $kos->cover);
+            }
+
+            $cover = $request->cover;
+            $new_cover = time() . '_' . Auth::user()->name . "-" . $kosData['nama'] . "." . $cover->getClientOriginalExtension();
+            $dest_cover = 'images/kos/';
+
+            $kosData['cover'] = $new_cover;
+
+            Kos::whereId($id)->update($kosData);
+            $cover->move($dest_cover, $new_cover);
+        }
+
+        if ($request->has('multiple')) {
             foreach ($request->multiple as $key => $value) {
-                $multiple_foto = $key . '_' . time() . '_' . Auth::user()->name . "." . $value->getClientOriginalExtension();
-                $destination = 'images/kos/multiple';
-                $value->move($destination, $multiple_foto);
+                $multiple_foto = $key . '_' . time() . '_' . Auth::user()->name . "-" . $kosData['nama'] . "." . $value->getClientOriginalExtension();
+                $dest_multiple_foto = 'images/kos/multiple';
+                $value->move($dest_multiple_foto, $multiple_foto);
                 Foto::create([
                     'kos_id' => $id,
                     'nama' => $multiple_foto,
@@ -109,44 +144,34 @@ class KosController extends Controller
             }
         }
 
-
-        if ($request->cover) {
-            $kos = Kos::whereId($id)->first();
-            if ($request->status == 1) {
-                if (file_exists(public_path() . '/images/kos' . $kos->cover)) {
-                    unlink(public_path() . '/images/kos' . $kos->cover);
-                }
+        if ($request->has('surat_kos') && $is_ulang) {
+            if ($kos->surat_kos && file_exists(public_path() . '/surat_kos' . $kos->surat_kos)) {
+                unlink(public_path() . '/surat_kos' . $kos->surat_kos);
             }
-            $cover = $request->cover;
-            $new_cover = time() . '_' . Auth::user()->name . "." . $cover->getClientOriginalExtension();
-            $destination = 'images/kos/';
-            $cover->move($destination, $new_cover);
-            Kos::whereId($id)->update([
-                'nama' => $request->nama,
-                'alamat' => $request->address_address,
-                'address_latitude' => $request->address_latitude,
-                'address_longitude' => $request->address_longitude,
-                'cover' => $new_cover,
-                'deskripsi' => $request->deskripsi,
-                'ukuran' => $request->ukuran,
-                'tampil' => $request->tampil,
-                'status' => $request->status,
-                'harga' => $conv_harga,
-            ]);
-        } else {
-            Kos::whereId($id)->update([
-                'nama' => $request->nama,
-                'alamat' => $request->address_address,
-                'address_latitude' => $request->address_latitude,
-                'address_longitude' => $request->address_longitude,
-                'deskripsi' => $request->deskripsi,
-                'ukuran' => $request->ukuran,
-                'tampil' => $request->tampil,
-                'status' => $request->status,
-                'harga' => $conv_harga,
-            ]);
+
+            $surat_kos = $request->surat_kos;
+            $new_surat_kos = time() . '_' . Auth::user()->name . "-" . $kosData['nama'] . "." . $surat_kos->getClientOriginalExtension();
+            $dest_surat_kos = 'surat_kos/';
+
+            $kosData['surat_kos'] = $new_surat_kos;
+            $kosData['verifikasi'] = 'proses';
+
+            Kos::whereId($id)->update($kosData);
+            $surat_kos->move($dest_surat_kos, $new_surat_kos);
         }
 
+        $kos->update($kosData);
+
         return redirect()->route('kos.index')->with('success', 'Informasi Kos Berhasil diubah!.');
+    }
+
+    public function getKosAlasan(Request $request)
+    {
+        $id = $request->id;
+        $kos = Kos::whereId($id)->first();
+        $alasan = $kos->alasan_tolak;
+
+        # Return string alasannya
+        return response()->json($alasan);
     }
 }

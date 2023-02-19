@@ -23,6 +23,7 @@
     <link href="{{ asset('backend/assets/vendors/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
     <link href="https://cdn.datatables.net/responsive/2.1.0/css/responsive.dataTables.min.css" rel="stylesheet"
         type="text/css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.2/dist/sweetalert2.min.css">
 </head>
 
 <body style="overflow: scroll">
@@ -66,7 +67,8 @@
     </script>
     <script src="https://cdn.datatables.net/responsive/2.1.0/js/responsive.bootstrap.min.js" type="text/javascript">
     </script>
-    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.2/dist/sweetalert2.all.min.js"></script>
+
     <!-- Template JS File -->
     <script src="{{ asset('backend/assets/js/scripts.js') }}"></script>
     <script src="{{ asset('backend/assets/js/custom.js') }}"></script>
@@ -77,7 +79,7 @@
         });
 
     </script>
-    
+
 
     @stack('scripts')
 

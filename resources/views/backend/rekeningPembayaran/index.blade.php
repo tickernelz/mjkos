@@ -2,7 +2,7 @@
 @section('title','Daftar Rekening Pembayaran')
 @section('content')
     <x-page-index title="Rekening Pembayaran" buttonLabel="Tambah Rekening Pembayaran"
-                  routeCreate="rekening_pembayaran.create">
+                  routeCreate="rekening_pembayaran.create" create="1">
         @if ($metode->IsNotEmpty())
             <table id="dataTable" class="table table-striped table-borderless responsive nowrap" style="width:100%">
                 <thead>

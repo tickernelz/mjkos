@@ -25,7 +25,8 @@ class KosSeeder extends Seeder
             'status' => 0,
             'cover' => 'No 1.Pemilik.jpeg',
             'deskripsi' => 'Kos Putri adalah kos yang nyaman dan bersih',
-            'tampil' => 1
+            'tampil' => 1,
+            'verifikasi' => 'sudah'
         ]);
 
         Kos::create([
@@ -39,7 +40,8 @@ class KosSeeder extends Seeder
             'status' => 0,
             'cover' => 'No 2.Pemilik.jpeg',
             'deskripsi' => 'Kos Putra adalah kos yang nyaman dan bersih',
-            'tampil' => 1
+            'tampil' => 1,
+            'verifikasi' => 'sudah'
         ]);
 
         Kos::create([
@@ -53,7 +55,9 @@ class KosSeeder extends Seeder
             'status' => 0,
             'cover' => 'No 3.Pemilik.jpeg',
             'deskripsi' => 'Kos Jagat adalah kos yang nyaman dan bersih',
-            'tampil' => 1
+            'tampil' => 1,
+            'verifikasi' => 'ditolak',
+            'alasan_tolak' => 'Kos tidak sesuai dengan syarat dan ketentuan'
         ]);
     }
 }
