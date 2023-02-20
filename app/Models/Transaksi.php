@@ -14,6 +14,16 @@ class Transaksi extends Model
         'id'
     ];
 
+    public function biayaNumber()
+    {
+        // Check if the biaya have a dot
+        if (strpos($this->biaya, '.') !== false) {
+            return $this->biaya;
+        } else {
+            return number_format($this->biaya, 0, ',', '.');
+        }
+    }
+
     public function kos()
     {
         return $this->belongsTo(Kos::class);
@@ -22,5 +32,10 @@ class Transaksi extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function penyewa_tambahan()
+    {
+        return $this->hasMany(PenyewaTambahan::class);
     }
 }

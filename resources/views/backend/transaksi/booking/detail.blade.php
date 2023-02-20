@@ -27,9 +27,23 @@
                             <td class="">{{$transaksi->kode}}</td>
                         </tr>
                         <tr>
-                            <th scope="row">Nama Pengguna</th>
+                            <th scope="row">Nama Penyewa</th>
                             <td>{{$transaksi->user->name}} <a href="/pengguna/{{$transaksi->user->id}}"
-                                                              class="btn btn-sm btn-primary" style="margin-left: 10px">Detail</a></td>
+                                                              class="btn btn-sm btn-primary" style="margin-left: 10px">Detail</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Penyewa Tambahan</th>
+                            <td>
+                                @if($transaksi->penyewa_tambahan == null)
+                                    <span class="badge badge-danger">Tidak Ada</span>
+                                @else
+                                    @foreach($transaksi->penyewa_tambahan as $penyewa)
+                                        <li style="margin-bottom: 5px; margin-top: 3px">{{$penyewa->nama}}
+                                            <span class="badge badge-primary">KTP: {{$penyewa->ktp}}</span>
+                                        </li>
+                            @endforeach
+                            @endif
                         </tr>
                         <tr>
                             <th scope="row">Nama Kos</th>

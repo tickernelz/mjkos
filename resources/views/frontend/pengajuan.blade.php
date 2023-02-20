@@ -150,7 +150,7 @@
                                                     <input autocomplete="off" type="file"
                                                            class="form-control form-control-user @error('bukti') is-invalid @enderror"
                                                            id="exampleName" placeholder="Nama" name="bukti"
-                                                           value="{{ old('bukti') }}">
+                                                           value="{{ old('bukti') }}" accept="image/*">
                                                     <button type="submit" class="btn btn-primary mt-2 float-end">Kirim
                                                     </button>
                                                 </div>
@@ -291,31 +291,41 @@
                                             <a href="/profile"><span class="badge bg-primary">Ubah</span></a>
                                         </div>
                                         <div class="">
-                                    <span class="fw-bold">Nama Penyewa</s>
-                                        <p class="text-muted">{{auth()->user()->name}}</p>
+                                            <span class="fw-bold">Nama Penyewa</span>
+                                            <p class="text-muted">{{auth()->user()->name}}</p>
                                         </div>
                                         <div class="">
-                                    <span class="fw-bold">Nomor Hp</s>
-                                        <p class="text-muted">{{auth()->user()->telp}}</p>
+                                            <span class="fw-bold">Nomor Hp</span>
+                                            <p class="text-muted">{{auth()->user()->telp}}</p>
                                         </div>
                                         <div class="">
-                                    <span class="fw-bold">Jenis Kelamin</s>
-                                        <p class="text-muted">
-                                            {{auth()->user()->jk == 'L' ? 'Laki-Laki' : 'Perempuan'}}
-                                        </p>
+                                            <span class="fw-bold">Jenis Kelamin</span>
+                                            <p class="text-muted">
+                                                {{auth()->user()->jk == 'L' ? 'Laki-Laki' : 'Perempuan'}}
+                                            </p>
                                         </div>
                                         <div class="">
-                                    <span class="fw-bold">Pekerjaan</s>
-                                        <p class="text-muted">
-                                            @if (auth()->user()->pekerjaan == 'Mahasiswa')
-                                                Mahasiswa
-                                            @elseif(auth()->user()->pekerjaan == 'Bekerja')
-                                                Bekerja
-                                            @else
-                                                Lainnya
-                                            @endif
-                                        </p>
+                                            <span class="fw-bold">Pekerjaan</span>
+                                            <p class="text-muted">
+                                                @if (auth()->user()->pekerjaan == 'Mahasiswa')
+                                                    Mahasiswa
+                                                @elseif(auth()->user()->pekerjaan == 'Bekerja')
+                                                    Bekerja
+                                                @else
+                                                    Lainnya
+                                                @endif
+                                            </p>
                                         </div>
+                                    </div>
+                                    <hr>
+                                    <div class="dataPenyewaTambahan">
+                                        <div class="d-flex justify-content-between total font-weight-bold mt-3">
+                                            <h4 class="fw-bold">Data Penyewa Tambahan</h4>
+                                        </div>
+                                        <div id="divPenyewaTambahan"></div>
+                                        <button type="button" class="btn btn-primary" id="tambahPenyewa">
+                                            Tambah Penyewa
+                                        </button>
                                     </div>
                                     <hr>
                                     <div class="data-priadi">
@@ -349,7 +359,7 @@
                                                value="{{$tgl_mulai}}"
                                                id="">
                                     </div>
-                                    <input type="text" hidden id="awal" value="{{$kos->biaya}}">
+                                    <input type="text" hidden id="awal" value="{{$kos->harga}}">
                                     <div class="mt-4">
                                         <button class="btn btn-success p-3" style="width:100%;">Ajukan Sewa</button>
                                     </div>
@@ -366,6 +376,56 @@
 
 @push('scripts')
     <script>
+        $(document).ready(function () {
+            const tambahPenyewa = document.getElementById('tambahPenyewa');
+            const divPenyewaTambahan = document.getElementById('divPenyewaTambahan');
+            tambahPenyewa.addEventListener('click', function () {
+                Swal.fire({
+                    title: 'Tambah Penyewa',
+                    text: "Data Penyewa",
+                    icon: 'info',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Tambah',
+                    html: '<input type="text" id="nama" class="swal2-input" placeholder="Nama">' +
+                        '<input type="text" id="ktp" class="swal2-input" placeholder="Nomor KTP">',
+                    focusConfirm: false,
+                    preConfirm: () => {
+                        const nama = Swal.getPopup().querySelector('#nama').value
+                        const ktp = Swal.getPopup().querySelector('#ktp').value
+                        if (!nama || !ktp) {
+                            Swal.showValidationMessage(`Nama dan Nomor KTP harus diisi`)
+                        }
+                        return {nama: nama, ktp: ktp}
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const data = result.value;
+                        divPenyewaTambahan.innerHTML += '<div class="row">' +
+                            '<div class="col-md-5">' +
+                            '<span class="fw-bold">Nama Penyewa</span>' +
+                            '<p class="text-muted">' + data.nama + '</p>' +
+                            '<input type="text" hidden name="namaPenyewaTambahan[]" value="' + data.nama + '">' +
+                            '</div>' +
+                            '<div class="col-md-5">' +
+                            '<span class="fw-bold">Nomor KTP</span>' +
+                            '<p class="text-muted">' + data.ktp + '</p>' +
+                            '<input type="text" hidden name="ktpPenyewaTambahan[]" value="' + data.ktp + '">' +
+                            '</div>' +
+                            '<div class="col-md-2">' +
+                            '<button type="button" class="btn btn-danger hapusPenyewa">Hapus</button>' +
+                            '</div>' +
+                            '</div>'
+                    }
+                })
+            })
+
+            $(document).on('click', '.hapusPenyewa', function () {
+                $(this).parent().parent().remove();
+            })
+        });
+
         $(document).on('change', '.selectpicker', function () {
             var select = $('#select option:selected').val()
             var nama = `${select} Bulan`

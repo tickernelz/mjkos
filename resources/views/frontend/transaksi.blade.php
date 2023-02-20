@@ -1,5 +1,5 @@
 @extends('frontend.layouts.app')
-@section('title', 'Trasaksi')
+@section('title', 'Transaksi')
 @section('content')
     <x-alert/>
     <!-- ======= Breadcrumbs Section ======= -->
@@ -7,10 +7,10 @@
         <section class="breadcrumbs shadow-sm" style="background-color: #eee;">
             <div class="container">
                 <div class="d-flex justify-content-between align-items-center">
-                    <h2 class="font-weight-bold">Trasaksi</h2>
+                    <h2 class="font-weight-bold">Transaksi</h2>
                     <ol>
                         <li><a href="/">Beranda</a></li>
-                        <li>Trasaksi</li>
+                        <li>Transaksi</li>
                     </ol>
                 </div>
             </div>
@@ -82,10 +82,20 @@
                                                             class="badge bg-warning">Bukti Pembayaran anda ditolak</span>
                                                     @endif
                                                 </div>
+                                                <div class="my-3">
+                                                    <span class="fw-bold">Nama Penyewa: </span>&nbsp;
+                                                    <p class="fw-bold">{{$item->user->name}}</p>
+                                                    @if($item->penyewa_tambahan->isNotEmpty())
+                                                        <span class="fw-bold">Penyewa Tambahan: </span>&nbsp;
+                                                        @foreach($item->penyewa_tambahan as $penyewa)
+                                                            <li class="fw-bold">{{$penyewa->nama}}</li>
+                                                        @endforeach
+                                                    @endif
+                                                </div>
                                                 <div class="row">
                                                     <div class="col">
                                                         <span>Total biaya Sewa</span>
-                                                        <p class="fw-bold">Rp{{$item->biaya}}</p>
+                                                        <p class="fw-bold">Rp{{$item->biayaNumber()}}</p>
                                                     </div>
                                                     <div class="col">
                                                         <span>Tanggal Masuk</span>
@@ -108,6 +118,13 @@
                                                             </button>
                                                         @endif
                                                     </div>
+                                                    <div class="my-3">
+                                                        <button type="button"
+                                                                class="btn btn-sm btn-secondary cetakBukti"
+                                                                value="{{$item->id}}">
+                                                            Cetak Bukti Pembayaran
+                                                        </button>
+                                                    </div>
                                                 @endif
                                                 @if ($item->status == 6 || $item->status == 2 || $item->status == -2)
                                                     <div class="row">
@@ -129,7 +146,7 @@
                                                                     <input autocomplete="off" type="file"
                                                                            class="form-control form-control-user @error('bukti') is-invalid @enderror"
                                                                            id="exampleName" placeholder="Nama"
-                                                                           name="bukti"
+                                                                           name="bukti" accept="image/*"
                                                                            value="{{ old('bukti') }}">
                                                                     <button type="submit"
                                                                             class="btn btn-primary mt-2 float-end">Kirim
@@ -261,6 +278,13 @@
     </script>
     <script>
         $(document).ready(function () {
+            const cetakBukti = $('.cetakBukti');
+
+            cetakBukti.click(function () {
+                const id = $(this).val();
+                window.open('/cetak/bukti/' + id, '_blank');
+            });
+
             $('#btnReview').click(function () {
                 const kos_id = parseInt($(this).val()),
                     user_id = {{auth()->user()->id}};

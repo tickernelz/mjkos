@@ -35,6 +35,9 @@ Route::get('/daftar', [FrontendController::class, 'cariKos'])->name('daftar');
 Route::get('/daftar/cari', [FrontendController::class, 'cariKos'])->name('cari.kos');
 Route::get('/detail/kos/{id}', [FrontendController::class, 'detailKos'])->name('detail.kos');
 
+Route::get('/status/{id}/{status}', [TransaksiController::class, 'statusUpdate'])->name('transaksi.status');
+
+Route::get('/cetak/bukti/{id}', [FrontendController::class, 'cetakBukti'])->name('cetak.bukti');
 
 Auth::routes();
 
@@ -87,7 +90,6 @@ Route::middleware(['auth'])->group(function () {
 
         // Transaksi
         Route::resource('transaksi', TransaksiController::class);
-        Route::get('/status/{id}/{status}', [TransaksiController::class, 'statusUpdate'])->name('transaksi.status');
         Route::get('/daftar/pengguna', [TransaksiController::class, 'daftarPengguna'])->name('pengguna.kos');
 
         Route::post('/foto/delete/{id}', function ($id) {

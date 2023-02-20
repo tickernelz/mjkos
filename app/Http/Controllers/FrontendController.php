@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Fasilitas;
 use App\Models\Kos;
+use App\Models\PenyewaTambahan;
 use App\Models\Peraturan;
 use App\Models\Review;
 use App\Models\Transaksi;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
 use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -123,6 +125,9 @@ class FrontendController extends Controller
             ->where('status', 0)
             ->where('user_id', Auth::user()->id)
             ->first();
+        $namaPenyewaTambahan = $request->namaPenyewaTambahan;
+        $ktpPenyewaTambahan = $request->ktpPenyewaTambahan;
+
         if ($favorit) {
             Transaksi::whereId($favorit->id)->update([
                 'kode' => $kode,
@@ -133,7 +138,7 @@ class FrontendController extends Controller
                 'biaya' => $request->biaya
             ]);
         } else {
-            Transaksi::create([
+            $transaksi = Transaksi::create([
                 'kode' => $kode,
                 'user_id' => Auth::user()->id,
                 'kos_id' => $id,
@@ -143,6 +148,16 @@ class FrontendController extends Controller
                 'status' => 1,
                 'biaya' => $request->biaya
             ]);
+
+            if ($namaPenyewaTambahan != null && $ktpPenyewaTambahan != null) {
+                foreach ($namaPenyewaTambahan as $key => $value) {
+                    PenyewaTambahan::create([
+                        'transaksi_id' => $transaksi->id,
+                        'nama' => $value,
+                        'ktp' => $ktpPenyewaTambahan[$key]
+                    ]);
+                }
+            }
         }
 
         return redirect()->route('form.pengajuan', $id)->with('success', 'Pengajuan Anda berhasil dilakukan.');
@@ -218,5 +233,38 @@ class FrontendController extends Controller
             return response()->json(['status' => 'error']);
         }
         return response()->json(['status' => 'success']);
+    }
+
+    public function cetakBukti($id)
+    {
+        $transaksi = Transaksi::whereId($id)->first();
+        $kos = $transaksi->kos; # one to one
+        $penyewa = $transaksi->user; # one to one
+
+        $namaKos = $kos->nama; # string
+        $alamatKos = $kos->alamat; # string
+        $namaPenyewa = $penyewa->name; # string
+        $kodeBooking = $transaksi->kode; # string
+        $penyewaTambahan = $transaksi->penyewa_tambahan; # one to many
+        $totalBiaya = $transaksi->biaya; # string
+        $tanggalMulai = $transaksi->tgl_mulai; # date
+        $tanggalSelesai = $transaksi->tgl_selesai; # date
+        $durasi = $transaksi->durasi; # string
+
+        $pdf = PDF::loadView('frontend.cetak', [
+            'transaksi' => $transaksi,
+            'kos' => $kos,
+            'penyewa' => $penyewa,
+            'namaKos' => $namaKos,
+            'alamatKos' => $alamatKos,
+            'namaPenyewa' => $namaPenyewa,
+            'kodeBooking' => $kodeBooking,
+            'penyewaTambahan' => $penyewaTambahan,
+            'totalBiaya' => $totalBiaya,
+            'tanggalMulai' => $tanggalMulai,
+            'tanggalSelesai' => $tanggalSelesai,
+            'durasi' => $durasi
+        ])->setPaper('a5');
+        return $pdf->stream();
     }
 }
