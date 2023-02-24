@@ -16,11 +16,7 @@ use App\Models\{Foto, Kos, Pengaturan, Transaksi};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\{Auth, Route};
 
-Route::get('/', function () {
-    $pengaturan = Pengaturan::first();
-    $kos = Kos::where('status', 0)->where('tampil', 1)->take(4)->get();
-    return view('frontend.home', compact('kos', 'pengaturan'));
-})->name('home');
+Route::get('/', [FrontendController::class, 'home'])->name('home');
 
 Route::get('/tracking', function (Request $request) {
     $kode = $request->kode;

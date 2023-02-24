@@ -69,7 +69,7 @@
             <th colspan="2">Penyewa</th>
             <td>{{ $namaPenyewa }}</td>
         </tr>
-        <tr>
+        {{--<tr>
             <th colspan="2">Penyewa Tambahan</th>
             <td>
                 @if(count($penyewaTambahan) > 0)
@@ -80,7 +80,7 @@
                     -
                 @endif
             </td>
-        </tr>
+        </tr>--}}
         <tr>
             <th colspan="2">Tanggal Mulai</th>
             <td>{{ date('d/m/Y', strtotime($tanggalMulai)) }}</td>

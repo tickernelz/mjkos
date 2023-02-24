@@ -32,7 +32,7 @@
                                                               class="btn btn-sm btn-primary" style="margin-left: 10px">Detail</a>
                             </td>
                         </tr>
-                        <tr>
+                        {{--<tr>
                             <th scope="row">Penyewa Tambahan</th>
                             <td>
                                 @if($transaksi->penyewa_tambahan == null)
@@ -44,7 +44,7 @@
                                         </li>
                             @endforeach
                             @endif
-                        </tr>
+                        </tr>--}}
                         <tr>
                             <th scope="row">Nama Kos</th>
                             <td>{{ $transaksi->kos->nama }}</td>

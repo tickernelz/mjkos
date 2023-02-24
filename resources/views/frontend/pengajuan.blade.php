@@ -318,7 +318,7 @@
                                         </div>
                                     </div>
                                     <hr>
-                                    <div class="dataPenyewaTambahan">
+                                    {{--<div class="dataPenyewaTambahan">
                                         <div class="d-flex justify-content-between total font-weight-bold mt-3">
                                             <h4 class="fw-bold">Data Penyewa Tambahan</h4>
                                         </div>
@@ -326,7 +326,7 @@
                                         <button type="button" class="btn btn-primary" id="tambahPenyewa">
                                             Tambah Penyewa
                                         </button>
-                                    </div>
+                                    </div>--}}
                                     <hr>
                                     <div class="data-priadi">
                                         <div class="d-flex justify-content-between total font-weight-bold mt-3">
@@ -376,7 +376,7 @@
 
 @push('scripts')
     <script>
-        $(document).ready(function () {
+        /*$(document).ready(function () {
             const tambahPenyewa = document.getElementById('tambahPenyewa');
             const divPenyewaTambahan = document.getElementById('divPenyewaTambahan');
             tambahPenyewa.addEventListener('click', function () {
@@ -424,7 +424,7 @@
             $(document).on('click', '.hapusPenyewa', function () {
                 $(this).parent().parent().remove();
             })
-        });
+        });*/
 
         $(document).on('change', '.selectpicker', function () {
             var select = $('#select option:selected').val()

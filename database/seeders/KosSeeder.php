@@ -25,6 +25,8 @@ class KosSeeder extends Seeder
             'status' => 0,
             'cover' => 'No 1.Pemilik.jpeg',
             'deskripsi' => 'Kos Putri adalah kos yang nyaman dan bersih',
+            'jumlah_kamar' => 5,
+            'jumlah_kamar_terisi' => 4,
             'tampil' => 1,
             'verifikasi' => 'sudah'
         ]);
@@ -40,6 +42,8 @@ class KosSeeder extends Seeder
             'status' => 0,
             'cover' => 'No 2.Pemilik.jpeg',
             'deskripsi' => 'Kos Putra adalah kos yang nyaman dan bersih',
+            'jumlah_kamar' => 5,
+            'jumlah_kamar_terisi' => 3,
             'tampil' => 1,
             'verifikasi' => 'sudah'
         ]);
@@ -55,9 +59,10 @@ class KosSeeder extends Seeder
             'status' => 0,
             'cover' => 'No 3.Pemilik.jpeg',
             'deskripsi' => 'Kos Jagat adalah kos yang nyaman dan bersih',
+            'jumlah_kamar' => 5,
+            'jumlah_kamar_terisi' => 2,
             'tampil' => 1,
-            'verifikasi' => 'ditolak',
-            'alasan_tolak' => 'Kos tidak sesuai dengan syarat dan ketentuan'
+            'verifikasi' => 'sudah',
         ]);
     }
 }

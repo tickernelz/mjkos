@@ -46,8 +46,17 @@
             <div class="container">
                 <div class="row">
                     <div class="col-6">
-                        <div class="text-start mt-2">
-                            <h4 class="card-title fw-bold">{{ $kos->nama }}</h4>
+                        <div class="d-flex flex-column">
+                            <div class="d-inline-flex justify-content-between">
+                                <h4 class="card-title fw-bold">{{ $kos->nama }}</h4>
+                                <span id="sisa_kamar" style="font-size: 14px; color: #ff0000">
+                                    @if ($kos->sisaKamar() == 0)
+                                        Kosong
+                                    @else
+                                        {{$kos->sisaKamar()}} Kamar Tersisa
+                                    @endif
+                                </span>
+                            </div>
                             <p class="text-muted" style="margin-bottom: -1px">Ukuran : {{$kos->ukuran}}</p>
                             <p class="text-muted mb-2">Jumlah Transaksi : {{$kos->jumlah_transaksi}}</p>
                             <span style="font-size: 15px">Terakhir {{$kos->updated_at}}</span>

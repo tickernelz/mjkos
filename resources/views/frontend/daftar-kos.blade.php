@@ -90,17 +90,31 @@
                                          style="background-image: url('/images/kos/{{$item->cover}}');">
                                     </div>
                                     <div class="card-body">
-                                        <div>
-                                            <h4 class="card-title fw-bold">{{$item->nama}}</h4>
-                                            <p class="text-muted my-0">Ukuran : {{$item->ukuran}}</p>
-                                            @if ($jarak != null)
-                                                @if(round($jarak[$item->id], 2) != 0)
-                                                    <p class="text-muted my-0">Jarak : {{round($jarak[$item->id], 2)}}
-                                                        KM</p>
+                                        <div class="d-flex flex-column">
+                                            <div class="d-inline-flex justify-content-between">
+                                                <h4 class="card-title fw-bold">{{$item->nama}}</h4>
+                                                <span id="sisa_kamar" style="font-size: 14px; color: #ff0000">
+                                                    @if ($item->sisaKamar() == 0)
+                                                        Kosong
+                                                    @else
+                                                        {{$item->sisaKamar()}} Kamar Tersisa
+                                                    @endif
+                                                </span>
+                                            </div>
+                                            <div>
+                                                <p class="text-muted my-0">Ukuran : {{$item->ukuran}}</p>
+                                                @if ($jarak != null)
+                                                    @if(round($jarak[$item->id], 2) != 0)
+                                                        <p class="text-muted my-0">Jarak
+                                                            : {{round($jarak[$item->id], 2)}}
+                                                            KM</p>
+                                                    @endif
                                                 @endif
-                                            @endif
-                                            <span
-                                                style="font-size: 14px">Terakhir diupdate {{$item->updated_at->format('d M Y')}}</span>
+                                            </div>
+                                            <div>
+                                                <span
+                                                    style="font-size: 14px">Terakhir diupdate {{$item->updated_at->format('d M Y')}}</span>
+                                            </div>
                                         </div>
                                         <div class="d-flex justify-content-between total font-weight-bold mt-3">
                                             <span>Rp {{$item->hargaNumber()}}</span><span>/ bulan</span>

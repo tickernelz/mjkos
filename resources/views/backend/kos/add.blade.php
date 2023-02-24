@@ -69,7 +69,7 @@
                     </div>
                 </div>
 
-                {{-- Status --}}
+                {{-- Tampilkan --}}
                 <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
                     <span style="color:red;">*</span>Tampilkan</label>
                     <select class="form-control form-control-user @error('tampil') is-invalid @enderror" name="tampil">
@@ -77,6 +77,17 @@
                         <option value="0">Tidak</option>
                     </select>
                     @error('tampil')
+                    <span class="text-danger">{{$message}}</span>
+                    @enderror
+                </div>
+
+                {{-- Jumlah Kamar --}}
+                <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
+                    <span style="color:red;">*</span>Jumlah Kamar</label>
+                    <input autocomplete="off" required type="number" name="jumlah_kamar"
+                           class="form-control form-control-user @error('jumlah_kamar') is-invalid @enderror"
+                           placeholder="Jumlah Kamar"/>
+                    @error('jumlah_kamar')
                     <span class="text-danger">{{$message}}</span>
                     @enderror
                 </div>
@@ -94,7 +105,7 @@
                 </div>
 
                 {{-- Status --}}
-                <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
+                <div class="col-sm-12 mb-3 mt-3 mb-sm-0">
                     <span style="color:red;">*</span>Harga</label>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
@@ -115,7 +126,8 @@
 
             <div class="form-imgaes mb-3">
                 <span style="color:red;">*</span>Cover Foto</label>
-                <input type="file" id="input-file-now-custom-3" required class="form-control m-2" name="cover" accept="image/*">
+                <input type="file" id="input-file-now-custom-3" required class="form-control m-2" name="cover"
+                       accept="image/*">
                 @error('cover')
                 <span class="text-danger">{{$message}}</span>
                 @enderror
@@ -124,10 +136,12 @@
             <div class="form-imgaes mb-3">
                 <span style="color:red;">*</span>Multiple Foto</label>
                 <div class="input-group mb-3">
-                    <input type="file" id="input-file-now-custom-3" class="form-control m-2" name="multiple[]" required accept="image/*">
+                    <input type="file" id="input-file-now-custom-3" class="form-control m-2" name="multiple[]" required
+                           accept="image/*">
                 </div>
                 <div class="input-group mb-3">
-                    <input type="file" id="input-file-now-custom-3" class="form-control m-2" name="multiple[]" required accept="image/*">
+                    <input type="file" id="input-file-now-custom-3" class="form-control m-2" name="multiple[]" required
+                           accept="image/*">
                     <button class="btn btn-success" type="button">Tambah Lain</button>
                 </div>
                 @error('multiple')

@@ -85,12 +85,12 @@
                                                 <div class="my-3">
                                                     <span class="fw-bold">Nama Penyewa: </span>&nbsp;
                                                     <p class="fw-bold">{{$item->user->name}}</p>
-                                                    @if($item->penyewa_tambahan->isNotEmpty())
+                                                    {{--@if($item->penyewa_tambahan->isNotEmpty())
                                                         <span class="fw-bold">Penyewa Tambahan: </span>&nbsp;
                                                         @foreach($item->penyewa_tambahan as $penyewa)
                                                             <li class="fw-bold">{{$penyewa->nama}}</li>
                                                         @endforeach
-                                                    @endif
+                                                    @endif--}}
                                                 </div>
                                                 <div class="row">
                                                     <div class="col">
@@ -134,6 +134,8 @@
                                                                 @csrf
                                                                 <input type="text" hidden name="id"
                                                                        value="{{$item->id}}">
+                                                                <input type="text" hidden name="status"
+                                                                       value="{{$item->status}}">
 
                                                                 @if ($item->status == -2)
                                                                     <input type="text" hidden name="status" value="1">

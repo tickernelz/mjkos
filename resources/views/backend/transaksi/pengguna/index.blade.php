@@ -55,7 +55,7 @@
                                        title="Konfimasi Pembayaran">
                                         Setuju Perpanjang
                                     </a>
-                                    <a href="{{route('transaksi.status', [$data->id, -8])}}"
+                                    <a href="{{route('transaksi.status', [$data->id, -1])}}"
                                        class="table-action btn btn-danger mr-2" data-toggle="tooltip"
                                        title="Setujui Pengajuan">
                                         Tolak Perpanjang

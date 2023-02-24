@@ -26,11 +26,15 @@ class CreateKosTable extends Migration
             $table->integer('status');  //0 = kosong; 1 = terisi
             $table->string('cover');
             $table->text('deskripsi');
+            $table->integer('jumlah_kamar')->default(0);
+            $table->integer('jumlah_kamar_terisi')->default(0);
             $table->tinyInteger('tampil')->default(0);
             $table->integer('jumlah_transaksi')->default(0);
             $table->string('surat_kos')->nullable();
             $table->enum('verifikasi', ['proses', 'sudah', 'ditolak'])->default('proses');
             $table->string('alasan_tolak')->nullable();
+            $table->integer('rating')->default(0);
+            $table->integer('jumlah_review')->default(0);
             $table->timestamps();
         });
     }

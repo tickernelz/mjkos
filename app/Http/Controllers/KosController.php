@@ -37,6 +37,7 @@ class KosController extends Controller
             'luas' => 'required',
             'lebar' => 'required',
             'tampil' => 'required',
+            'jumlah_kamar' => 'required',
             'status' => 'required',
             'cover' => 'required',
             'multiple' => 'required',
@@ -60,6 +61,7 @@ class KosController extends Controller
             'address_longitude' => $request->address_longitude,
             'cover' => $new_cover,
             'deskripsi' => $request->deskripsi,
+            'jumlah_kamar' => $request->jumlah_kamar,
             'ukuran' => $ukuran,
             'tampil' => $request->tampil,
             'status' => $request->status,
@@ -98,6 +100,8 @@ class KosController extends Controller
             'address_latitude' => 'required',
             'address_longitude' => 'required',
             'deskripsi' => 'required',
+            'jumlah_kamar' => 'required',
+            'jumlah_kamar_terisi' => 'required',
             'ukuran' => 'required',
             'tampil' => 'required',
             'status' => 'required',
@@ -105,9 +109,13 @@ class KosController extends Controller
         ]);
 
         $kosData = array_merge($validatedData, [
+            'nama' => $request->nama,
             'alamat' => $request->address_address,
             'address_latitude' => $request->address_latitude,
             'address_longitude' => $request->address_longitude,
+            'deskripsi' => $request->deskripsi,
+            'jumlah_kamar' => $request->jumlah_kamar,
+            'jumlah_kamar_terisi' => $request->jumlah_kamar_terisi,
             'ukuran' => $request->ukuran,
             'tampil' => $request->tampil,
             'status' => $request->status,

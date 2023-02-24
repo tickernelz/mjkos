@@ -27,7 +27,8 @@
                 @endforeach
             </div>
         </div>
-        <form action="{{route('kos.update', $kos->id)}}" method="POST" enctype="multipart/form-data">
+        <form action="{{route('kos.update', $kos->id)}}" method="POST" enctype="multipart/form-data" name="formUpdate"
+              id="formUpdate">
             @csrf
             @method('PUT')
 
@@ -84,6 +85,28 @@
                         <option value="0" {{$kos->tampil == 0 ? 'selected':''}}>Tidak</option>
                     </select>
                     @error('tampil')
+                    <span class="text-danger">{{$message}}</span>
+                    @enderror
+                </div>
+
+                {{-- Jumlah Kamar --}}
+                <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
+                    <span style="color:red;">*</span>Jumlah Kamar</label>
+                    <input autocomplete="off" required type="number" name="jumlah_kamar" id="jumlah_kamar"
+                           class="form-control form-control-user @error('jumlah_kamar') is-invalid @enderror"
+                           placeholder="Jumlah Kamar" value="{{$kos->jumlah_kamar}}"/>
+                    @error('jumlah_kamar')
+                    <span class="text-danger">{{$message}}</span>
+                    @enderror
+                </div>
+
+                {{-- Jumlah Kamar Terisi --}}
+                <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
+                    <span style="color:red;">*</span>Jumlah Kamar Terisi</label>
+                    <input autocomplete="off" required type="number" name="jumlah_kamar_terisi" id="jumlah_kamar_terisi"
+                           class="form-control form-control-user @error('jumlah_kamar_terisi') is-invalid @enderror"
+                           placeholder="Jumlah Kamar Terisi" value="{{$kos->jumlah_kamar_terisi}}"/>
+                    @error('jumlah_kamar_terisi')
                     <span class="text-danger">{{$message}}</span>
                     @enderror
                 </div>
@@ -180,6 +203,20 @@
             });
             $("body").on("click", "#rmv", function () {
                 $(this).parents(".hdtuto").remove();
+            });
+            $("#formUpdate").submit(function () {
+                const jumlah_kamar = $('#jumlah_kamar').val();
+                const jumlah_kamar_terisi = $('#jumlah_kamar_terisi').val();
+                if (jumlah_kamar_terisi > jumlah_kamar) {
+                    Swal.fire({
+                        title: 'Gagal!',
+                        text: 'Jumlah Kamar Terisi Tidak Boleh Lebih Dari Jumlah Kamar',
+                        icon: 'error',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                    return false;
+                }
             });
         });
 

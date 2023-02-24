@@ -19,6 +19,11 @@ class Kos extends Model
         return number_format($this->harga, 0, ',', '.');
     }
 
+    public function sisaKamar()
+    {
+        return $this->jumlah_kamar - $this->jumlah_kamar_terisi;
+    }
+
     public function meanRating()
     {
         $avg = $this->review()->avg('rating');

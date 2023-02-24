@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Fasilitas;
 use App\Models\Kos;
+use App\Models\Pengaturan;
 use App\Models\PenyewaTambahan;
 use App\Models\Peraturan;
 use App\Models\Review;
@@ -11,11 +12,22 @@ use App\Models\Transaksi;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
 use DB;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class FrontendController extends Controller
 {
+    public function home()
+    {
+        $pengaturan = Pengaturan::first();
+        $kos = Kos::where('status', 0)->where('tampil', 1);
+        // Urutkan berdasarkan rating, jumlah review, dan jumlah transaksi
+        $this->sortPopuler($kos);
+        $kos = $kos->orderBy('rating', 'desc')->orderBy('jumlah_review', 'desc')->orderBy('jumlah_transaksi', 'desc')->paginate(4);
+        return view('frontend.home', compact('kos', 'pengaturan'));
+    }
+
     public function detailKos($id)
     {
         $kos = Kos::whereId($id)->with('foto')->first();
@@ -79,12 +91,14 @@ class FrontendController extends Controller
         $kos = $kos
             ->where('tampil', 1)
             ->where('verifikasi', 'sudah')
+            ->where('jumlah_kamar_terisi', '<', DB::raw('jumlah_kamar'))
             ->where('harga', '>=', $fil_harga_min)
             ->where('harga', '<=', $fil_harga_max);
 
         // Filter
         if ($paling_populer == "on") {
-            $kos = $kos->orderBy('jumlah_transaksi', 'desc');
+            $this->sortPopuler($kos);
+            $kos = $kos->orderBy('rating', 'desc')->orderBy('jumlah_review', 'desc')->orderBy('jumlah_transaksi', 'desc');
         }
         $kos = $kos->paginate(10);
 
@@ -118,6 +132,11 @@ class FrontendController extends Controller
 
     public function updatePengajuan($id, Request $request)
     {
+        $transaksi = Transaksi::where('user_id', Auth::user()->id)->whereBetween('status', [1, 4])->get();
+        if ($transaksi->IsNotEmpty()) {
+            return redirect()->back()->with('error', 'Anda tidak boleh meminjam lebih dari 1 kos.');
+        }
+
         $durasi = "+" . $request->durasi . "" . "month";
         $tgl_end = date('Y-m-d', strtotime($durasi, strtotime($request->mulai)));
         $kode = "ATJ" . "-" . date('dmY') . substr(str_shuffle("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 5);
@@ -180,7 +199,7 @@ class FrontendController extends Controller
         $destination = 'images/bukti';
         $bukti->move($destination, $new_bukti);
 
-        if ($request->status == 1) {
+        if ($request->status == 6) {
             Transaksi::whereId($id)->update([
                 'status' => 7,
                 'foto_pembayaran' => $new_bukti
@@ -208,6 +227,7 @@ class FrontendController extends Controller
         Kos::whereId($kos_id)->update([
             'status' => 0
         ]);
+        Kos::whereId($kos_id)->decrement('jumlah_kamar_terisi');
         Transaksi::whereId($request->delete_id)->delete();
         return redirect()->back()->with('success', 'Berhasil dihapus!.');
     }
@@ -266,5 +286,23 @@ class FrontendController extends Controller
             'durasi' => $durasi
         ])->setPaper('a5');
         return $pdf->stream();
+    }
+
+    /**
+     * @param Kos $kos
+     * @return void
+     */
+    public function sortPopuler(Builder $kos): void
+    {
+        foreach ($kos->get() as $k) {
+            $review = Review::where('kos_id', $k->id)->get();
+            $rating = 0;
+            foreach ($review as $r) {
+                $rating += $r->rating;
+            }
+            $k->rating = $rating;
+            $k->jumlah_review = count($review);
+            $k->save();
+        }
     }
 }
