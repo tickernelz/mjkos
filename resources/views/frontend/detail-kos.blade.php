@@ -313,7 +313,7 @@
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Oops...',
-                                text: 'Anda belum mengupload KTP dan KK',
+                                text: response.message,
                             })
                         }
                     }

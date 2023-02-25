@@ -134,7 +134,7 @@ class FrontendController extends Controller
     {
         $transaksi = Transaksi::where('user_id', Auth::user()->id)->whereBetween('status', [1, 4])->get();
         if ($transaksi->IsNotEmpty()) {
-            return redirect()->back()->with('error', 'Anda tidak boleh meminjam lebih dari 1 kos.');
+            return redirect()->back()->with('error', 'Anda tidak boleh menyewa lebih dari 1 kos.');
         }
 
         $durasi = "+" . $request->durasi . "" . "month";
@@ -244,13 +244,20 @@ class FrontendController extends Controller
 
     public function checkDokumen()
     {
+        if (Auth::user() == null) {
+            return response()->json(['status' => 'error', 'message' => 'Silahkan login terlebih dahulu.']);
+        }
         $user_id = Auth::user()->id;
         $user = User::whereId($user_id)->first();
         // Check foto_ktp and foto_kk not null
         $kk = $user->foto_kk;
         $ktp = $user->foto_ktp;
         if ($kk == null || $ktp == null) {
-            return response()->json(['status' => 'error']);
+            return response()->json(['status' => 'error', 'message' => 'Anda belum mengupload KTP dan KK.']);
+        }
+        $transaksi = Transaksi::where('user_id', $user_id)->whereBetween('status', [1, 4])->get();
+        if ($transaksi->IsNotEmpty()) {
+            return response()->json(['status' => 'error', 'message' => 'Anda tidak boleh menyewa lebih dari 1 kos.']);
         }
         return response()->json(['status' => 'success']);
     }

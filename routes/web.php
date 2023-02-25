@@ -35,6 +35,8 @@ Route::get('/status/{id}/{status}', [TransaksiController::class, 'statusUpdate']
 
 Route::get('/cetak/bukti/{id}', [FrontendController::class, 'cetakBukti'])->name('cetak.bukti');
 
+Route::get('/check/dokumen', [FrontendController::class, 'checkDokumen'])->name('check.dokumen');
+
 Auth::routes();
 
 Route::middleware(['auth'])->group(function () {
@@ -115,7 +117,6 @@ Route::middleware(['auth'])->group(function () {
             $transaksi = Transaksi::where('status', 0)->where('user_id', Auth::user()->id)->paginate(10);
             return view('frontend.favorit', compact('transaksi'));
         });
-        Route::get('/check/dokumen', [FrontendController::class, 'checkDokumen'])->name('check.dokumen');
         Route::post('/review/store', [ReviewsController::class, 'store'])->name('review.store');
     });
 });
