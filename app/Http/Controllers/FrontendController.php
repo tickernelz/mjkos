@@ -188,7 +188,7 @@ class FrontendController extends Controller
         $id = $request->id;
         $transaksi = Transaksi::whereId($id)->first();
         if ($request->status == 1) {
-            if (file_exists(public_path() . '/images/bukti' . $transaksi->foto_pembayaran)) {
+            if ($transaksi->foto_pembayaran && file_exists(public_path() . '/images/bukti' . $transaksi->foto_pembayaran)) {
                 unlink(public_path() . '/images/bukti' . $transaksi->foto_pembayaran);
             }
         }

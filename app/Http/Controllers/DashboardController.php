@@ -76,11 +76,11 @@ class DashboardController extends Controller
         $user_id = Auth::user()->id;
         if ($request->foto) {
             $usercek = User::whereid($user_id)->first();
-            if (file_exists(public_path() . '/images/profil/' . $usercek->foto)) {
+            if ($usercek->foto && file_exists(public_path() . '/images/profil/' . $usercek->foto)) {
                 unlink(public_path() . '/images/profil/' . $usercek->foto);
             }
             $foto = $request->foto;
-            $new_foto = Auth::user()->name . "-" . Auth::user()->nim . "." . $foto->getClientOriginalExtension();
+            $new_foto = Auth::user()->name . "-" . time() . "." . $foto->getClientOriginalExtension();
             $destination = 'images/profil/';
             $foto->move($destination, $new_foto);
             // Store Data
